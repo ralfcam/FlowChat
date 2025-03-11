@@ -17,8 +17,6 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
-import Typography from '@mui/material/Typography';
-import { useAuth } from '../../context/AuthContext';
 
 const drawerWidth = 240;
 
@@ -45,7 +43,6 @@ interface NavItem {
 const SideNav: React.FC<SideNavProps> = ({ open, onDrawerClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
 
   const mainNavItems: NavItem[] = [
     { title: 'Dashboard', path: '/', icon: <DashboardIcon /> },
@@ -78,13 +75,6 @@ const SideNav: React.FC<SideNavProps> = ({ open, onDrawerClose }) => {
       open={open}
     >
       <DrawerHeader>
-        {user && (
-          <Box sx={{ flexGrow: 1, pl: 2 }}>
-            <Typography variant="subtitle2">
-              {typeof user.name === 'string' ? user.name : 'User'}
-            </Typography>
-          </Box>
-        )}
         <IconButton onClick={onDrawerClose}>
           <ChevronLeftIcon />
         </IconButton>

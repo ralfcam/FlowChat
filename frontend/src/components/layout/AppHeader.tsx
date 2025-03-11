@@ -10,7 +10,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { useAuth } from '../../context/AuthContext';
 
 const drawerWidth = 240;
 
@@ -38,7 +37,6 @@ interface AppHeaderProps {
 
 const AppHeader: React.FC<AppHeaderProps> = ({ open, onDrawerOpen }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user } = useAuth();
   
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -98,11 +96,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ open, onDrawerOpen }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
-              <Typography variant="inherit">
-                {user ? (typeof user.name === 'string' ? user.name : 'Profile') : 'Profile'}
-              </Typography>
-            </MenuItem>
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
             <MenuItem onClick={handleClose}>Logout</MenuItem>
           </Menu>

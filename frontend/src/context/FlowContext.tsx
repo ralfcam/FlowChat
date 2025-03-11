@@ -80,7 +80,7 @@ interface FlowContextType {
   onConnect: (connection: Connection) => void;
   setSelectedNode: (node: Node | null) => void;
   updateNodeData: (nodeId: string, newData: Record<string, any>) => void;
-  addNode: (type: string) => void;
+  addNode: (type: string, position?: { x: number, y: number }) => void;
   duplicateNode: (node: Node) => void;
   deleteNode: (nodeId: string) => void;
   
@@ -135,11 +135,11 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
   }, [setNodes]);
   
   // Add a new node
-  const addNode = useCallback((type: string) => {
+  const addNode = useCallback((type: string, position?: { x: number, y: number }) => {
     const newNode = {
       id: `node_${Date.now()}`,
       type,
-      position: {
+      position: position || {
         x: 250,
         y: 200,
       },
