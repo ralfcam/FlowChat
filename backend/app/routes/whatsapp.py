@@ -2,12 +2,17 @@
 WhatsApp API routes for FlowChat.
 These routes handle sending messages and receiving webhooks from Twilio.
 """
-from flask import Blueprint, request, jsonify, current_app, Response, url_for
+from flask import Blueprint, request, jsonify, current_app, Response, url_for, g # type: ignore
+import logging
+from datetime import datetime
+import traceback
 
 from ..services.messages import WhatsAppService
 from ..services.twilio_service import TwilioService
 from ..utils.context_logger import logger, log_operation
 from ..utils.error_handlers import APIError
+from ..models.message import Message
+from ..models.contact import Contact
 
 # Create route-specific logger
 route_logger = logger.with_context(module='whatsapp_routes')
@@ -39,10 +44,7 @@ def send_message():
         # Validate required fields
         if not data or 'to' not in data or 'body' not in data:
             req_logger.warning("Missing required fields for send message", extra={'data': data})
-            return jsonify({
-                'success': False,
-                'error': 'Missing required fields: to, body'
-            }), 400
+            raise APIError(status_code=400, message="Missing required fields: to, body")
             
         # Get parameters
         to = data['to']
@@ -50,14 +52,26 @@ def send_message():
         media_url = data.get('media_url')
         message_type = data.get('type', 'text')
         metadata = data.get('metadata', {})
+        from_user = g.get('user_id') if hasattr(g, 'user') else data.get('from_user')
+        
+        # Add request metadata
+        if not metadata:
+            metadata = {}
+        metadata.update({
+            'request_id': getattr(g, 'request_id', 'no-request-id'),
+            'sent_at': datetime.utcnow().isoformat(),
+            'client_ip': request.remote_addr,
+            'user_agent': request.user_agent.string if request.user_agent else None
+        })
         
         req_logger.info(
             f"Sending message to {to}", 
             extra={
                 'to': to, 
-                'media_url': bool(media_url),
+                'has_media': bool(media_url),
                 'message_type': message_type,
-                'message_length': len(body)
+                'message_length': len(body),
+                'from_user': from_user
             }
         )
         
@@ -65,6 +79,7 @@ def send_message():
         result = WhatsAppService.send_message(
             content=body,
             to_contact=to,
+            from_user=from_user,
             message_type=message_type,
             metadata=metadata,
             media_url=media_url
@@ -84,7 +99,9 @@ def send_message():
             response = {
                 'success': True,
                 'message_id': str(result._id),
-                'status': getattr(result, 'status', 'sent')
+                'status': getattr(result, 'status', 'sent'),
+                'to': to,
+                'timestamp': datetime.utcnow().isoformat()
             }
             req_logger.info("Message sent successfully", extra={'message_id': str(result._id)})
             return jsonify(response), 200
@@ -96,11 +113,14 @@ def send_message():
                 'error': "Unknown result from message service"
             }), 400
             
+    except APIError as e:
+        return jsonify({'success': False, 'error': e.message}), e.status_code
     except Exception as e:
         req_logger.exception(f"Error in /send endpoint: {str(e)}")
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': str(e),
+            'trace': traceback.format_exc() if current_app.debug else None
         }), 500
 
 @whatsapp_bp.route('/send-template', methods=['POST'])
@@ -313,4 +333,102 @@ def webhook_verify():
             
     except Exception as e:
         verify_logger.exception(f"Error in webhook verification: {str(e)}")
-        return Response(status=500) 
+        return Response(status=500)
+
+@whatsapp_bp.route('/chat/<contact_id>', methods=['GET'])
+@log_operation('whatsapp_get_chat')
+def get_chat(contact_id):
+    """
+    Get chat history with a contact.
+    
+    Query parameters:
+    - limit: Maximum number of messages to return (default: 50)
+    - skip: Number of messages to skip (for pagination)
+    - include_metadata: Whether to include message metadata (default: false)
+    """
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        skip = request.args.get('skip', 0, type=int)
+        include_metadata = request.args.get('include_metadata', 'false').lower() == 'true'
+        
+        # Get the current user ID if authenticated
+        user_id = g.get('user_id') if hasattr(g, 'user') else None
+        
+        # Check if contact_id is a phone number (starts with +)
+        if contact_id.startswith('+'):
+            contact = Contact.find_by_phone(contact_id)
+            if not contact:
+                # Create a new contact if it doesn't exist
+                try:
+                    contact = Contact.create({
+                        'phone': contact_id,
+                        'name': f"WhatsApp User ({contact_id})",
+                        'source': 'chat_api'
+                    })
+                except Exception as e:
+                    route_logger.error(f"Failed to create contact: {str(e)}")
+                    raise APIError(status_code=500, message=f"Failed to create contact: {str(e)}")
+        else:
+            # Try to find by ObjectId
+            try:
+                contact = Contact.find_by_id(contact_id)
+            except Exception:
+                # Invalid ObjectId format
+                raise APIError(status_code=400, message=f"Invalid contact ID format: {contact_id}")
+        
+        if not contact:
+            raise APIError(status_code=404, message="Contact not found")
+        
+        # Get messages for this contact
+        if user_id:
+            messages = Message.find_chat_messages(user_id, str(contact._id), limit, skip)
+        else:
+            messages = Message.find_by_contact(str(contact._id), limit, skip)
+        
+        # Format messages for response
+        formatted_messages = []
+        for msg in messages:
+            message_dict = {
+                'id': str(msg._id),
+                'content': msg.content,
+                'type': msg.message_type,
+                'status': msg.status,
+                'direction': msg.direction,
+                'timestamp': msg.created_at.isoformat(),
+                'is_outgoing': msg.direction == 'outbound'
+            }
+            
+            if include_metadata:
+                message_dict['metadata'] = msg.metadata
+                
+            formatted_messages.append(message_dict)
+        
+        # Update unread messages status
+        for msg in messages:
+            if msg.direction == 'inbound' and msg.status != 'read':
+                msg.update_status('read')
+        
+        return jsonify({
+            'success': True,
+            'data': formatted_messages,
+            'meta': {
+                'limit': limit,
+                'skip': skip,
+                'total': len(formatted_messages),
+                'contact': {
+                    'id': str(contact._id) if hasattr(contact, '_id') else None,
+                    'phone': contact.phone,
+                    'name': contact.name
+                }
+            }
+        }), 200
+        
+    except APIError as e:
+        return jsonify({'success': False, 'error': e.message}), e.status_code
+    except Exception as e:
+        route_logger.exception(f"Error in /chat endpoint: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'trace': traceback.format_exc() if current_app.debug else None
+        }), 500 

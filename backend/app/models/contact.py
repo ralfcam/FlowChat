@@ -46,7 +46,15 @@ class Contact:
     def find_by_id(cls, contact_id):
         """Find a contact by ID."""
         db = get_db()
-        data = db[cls.collection_name].find_one({'_id': ObjectId(contact_id)})
+        
+        # Convert string ID to ObjectId if needed
+        if isinstance(contact_id, str):
+            try:
+                contact_id = ObjectId(contact_id)
+            except:
+                return None
+            
+        data = db[cls.collection_name].find_one({'_id': contact_id})
         return cls.from_dict(data) if data else None
     
     @classmethod

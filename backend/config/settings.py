@@ -28,6 +28,15 @@ class Settings:
     WHATSAPP_API_URL = os.getenv('WHATSAPP_API_URL', '')
     WHATSAPP_API_TOKEN = os.getenv('WHATSAPP_API_TOKEN', '')
     
+    # Twilio settings
+    TWILIO_ENABLED = os.getenv('TWILIO_ENABLED', 'True') == 'True'
+    TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID', '')
+    TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN', '')
+    TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER', '')
+    
+    # Direct WhatsApp API settings (alternative to Twilio)
+    DIRECT_WHATSAPP_ENABLED = os.getenv('DIRECT_WHATSAPP_ENABLED', 'False') == 'True'
+    
     # Logging settings
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 

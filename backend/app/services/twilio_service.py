@@ -6,10 +6,10 @@ import os
 import json
 from typing import Dict, Any, List, Optional, Union
 
-from twilio.rest import Client
-from twilio.base.exceptions import TwilioRestException, TwilioException
-from twilio.request_validator import RequestValidator
-from dotenv import load_dotenv
+from twilio.rest import Client # type: ignore
+from twilio.base.exceptions import TwilioRestException, TwilioException # type: ignore
+from twilio.request_validator import RequestValidator # type: ignore
+from dotenv import load_dotenv # type: ignore
 
 from app.utils.context_logger import logger, log_operation
 

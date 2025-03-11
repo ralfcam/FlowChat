@@ -12,12 +12,22 @@ class Message:
     
     collection_name = 'messages'
     
+    # Ensure indexes exist for efficient querying
+    @classmethod
+    def ensure_indexes(cls):
+        db = get_db()
+        # Create indexes for common query patterns
+        db[cls.collection_name].create_index([("to_contact", 1), ("created_at", -1)])
+        db[cls.collection_name].create_index([("from_user", 1), ("created_at", -1)])
+        db[cls.collection_name].create_index([("status", 1)])
+    
     def __init__(self, 
                  content, 
                  from_user=None, 
                  to_contact=None, 
                  message_type='text', 
                  status='pending',
+                 direction='outbound',
                  metadata=None,
                  _id=None):
         """Initialize a new Message instance."""
@@ -26,6 +36,7 @@ class Message:
         self.to_contact = to_contact
         self.message_type = message_type  # text, media, template
         self.status = status  # pending, sent, delivered, read, failed
+        self.direction = direction  # inbound, outbound
         self.metadata = metadata or {}
         self._id = _id if _id else ObjectId()
         self.created_at = datetime.datetime.utcnow()
@@ -40,6 +51,7 @@ class Message:
             'to_contact': self.to_contact,
             'message_type': self.message_type,
             'status': self.status,
+            'direction': self.direction,
             'metadata': self.metadata,
             'created_at': self.created_at,
             'updated_at': self.updated_at
@@ -49,15 +61,38 @@ class Message:
     def find_by_id(cls, message_id):
         """Find a message by ID."""
         db = get_db()
-        data = db[cls.collection_name].find_one({'_id': ObjectId(message_id)})
+        if isinstance(message_id, str):
+            try:
+                message_id = ObjectId(message_id)
+            except:
+                return None
+        data = db[cls.collection_name].find_one({'_id': message_id})
         return cls.from_dict(data) if data else None
     
     @classmethod
     def find_by_contact(cls, contact_id, limit=50, skip=0):
         """Find messages by contact ID."""
         db = get_db()
+        # Find messages where the contact is either sender or receiver
         cursor = db[cls.collection_name].find(
-            {'to_contact': contact_id}
+            {'$or': [
+                {'to_contact': contact_id},
+                {'from_user': contact_id}
+            ]}
+        ).sort('created_at', -1).skip(skip).limit(limit)
+        
+        return [cls.from_dict(msg) for msg in cursor]
+    
+    @classmethod
+    def find_chat_messages(cls, user_id, contact_id, limit=50, skip=0):
+        """Find all messages in a chat between user and contact."""
+        db = get_db()
+        # Find messages exchanged between a user and contact
+        cursor = db[cls.collection_name].find(
+            {'$or': [
+                {'from_user': user_id, 'to_contact': contact_id},
+                {'from_user': contact_id, 'to_contact': user_id}
+            ]}
         ).sort('created_at', -1).skip(skip).limit(limit)
         
         return [cls.from_dict(msg) for msg in cursor]
@@ -74,6 +109,7 @@ class Message:
             to_contact=data.get('to_contact'),
             message_type=data.get('message_type', 'text'),
             status=data.get('status', 'pending'),
+            direction=data.get('direction', 'outbound'),
             metadata=data.get('metadata', {}),
             _id=data['_id']
         )
@@ -96,6 +132,7 @@ class Message:
             to_contact=data.get('contact_id') or data.get('to_contact'),
             message_type=data.get('message_type', 'text'),
             status=data.get('status', 'pending'),
+            direction=data.get('direction', 'outbound'),
             metadata=data.get('metadata', {})
         )
         
@@ -157,4 +194,15 @@ class Message:
         """Delete the message from the database."""
         db = get_db()
         result = db[self.collection_name].delete_one({'_id': self._id})
-        return result.deleted_count > 0 
+        return result.deleted_count > 0
+    
+    @classmethod
+    def count_unread_messages(cls, contact_id):
+        """Count unread messages for a contact."""
+        db = get_db()
+        count = db[cls.collection_name].count_documents({
+            'to_contact': contact_id,
+            'status': {'$ne': 'read'},
+            'direction': 'inbound'
+        })
+        return count 
