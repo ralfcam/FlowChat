@@ -8,6 +8,7 @@ from app.routes.auth import auth_bp
 from app.routes.messages import messages_bp
 from app.routes.contacts import contacts_bp
 from app.routes.webhooks import webhooks_bp
+from app.routes.whatsapp import whatsapp_bp
 
 
 def register_routes(app):
@@ -24,6 +25,7 @@ def register_routes(app):
     # Register root blueprints
     app.register_blueprint(api_v1)
     app.register_blueprint(webhooks_bp)
+    app.register_blueprint(whatsapp_bp)
     
     # Add health check route
     @app.route('/health')
