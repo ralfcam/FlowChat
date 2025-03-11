@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   Background,
@@ -6,10 +6,7 @@ import ReactFlow, {
   MiniMap,
   BackgroundVariant,
   Panel,
-  useReactFlow,
-  Edge,
-  Node,
-  Connection
+  Node
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { 
@@ -317,8 +314,7 @@ const FlowCanvas = () => {
     setSelectedNode,
     addNode,
     duplicateNode,
-    deleteNode,
-    updateNodeData
+    deleteNode
   } = useFlow();
   
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -507,7 +503,6 @@ const PropertiesPanel = () => {
 
 // FlowEditorContent component that uses the FlowContext
 const FlowEditorContent = () => {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const { 
     flowName, 
     flowDescription, 
