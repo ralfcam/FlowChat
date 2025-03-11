@@ -24,7 +24,7 @@ const Main = styled('main', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 240,
+    marginLeft: 0,
   }),
 }));
 

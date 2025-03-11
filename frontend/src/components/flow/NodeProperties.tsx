@@ -68,7 +68,7 @@ const NodeProperties: React.FC<NodePropertiesProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUpdate({ message: e.target.value })}
           margin="normal"
           placeholder="Enter message text..."
-          helperText="Use {{variable}} for dynamic content"
+          helperText="Use {'{{'}{'{variable}'}{'}}'} for dynamic content"
         />
         
         <FormControl fullWidth margin="normal">

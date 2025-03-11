@@ -57,7 +57,7 @@ const MessageNode: React.FC<NodeProps<MessageNodeData>> = ({
       />
       
       <Typography variant="caption" color="text.secondary">
-        Variables: Use {{name}} to insert contact variables
+        Variables: Use {'{{'}{'{name}'}{'}}'} to insert contact variables
       </Typography>
       
       <Handle

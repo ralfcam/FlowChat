@@ -445,15 +445,17 @@ const FlowCanvas = () => {
           <FlowControls />
           
           {/* Node toolbar for each node */}
-          {nodes.map((node) => (
-            <NodeToolbar
-              key={`toolbar-${node.id}`}
-              node={node}
-              onDelete={() => onNodeToolbarAction('delete', node)}
-              onDuplicate={() => onNodeToolbarAction('duplicate', node)}
-              onEdit={() => onNodeToolbarAction('edit', node)}
-            />
-          ))}
+          {nodes.map((node) => {
+            return (
+              <NodeToolbar
+                key={`toolbar-${node.id}`}
+                node={node}
+                onDelete={() => onNodeToolbarAction('delete', node)}
+                onDuplicate={() => onNodeToolbarAction('duplicate', node)}
+                onEdit={() => onNodeToolbarAction('edit', node)}
+              />
+            );
+          })}
         </ReactFlow>
       </Box>
       
