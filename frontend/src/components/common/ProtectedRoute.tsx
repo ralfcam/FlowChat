@@ -12,7 +12,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 const bypassAuthInDevelopment = true;
 
 interface ProtectedRouteProps {
-  requiredRole?: 'admin' | 'user' | 'viewer';
+  requiredRole?: string;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
@@ -68,7 +68,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
             onClose={() => setShowDevNotice(false)} 
             sx={{ width: '100%' }}
           >
-            Development mode: Authentication is bypassed.
+            <Typography variant="body2">Development mode: Authentication is bypassed.</Typography>
           </Alert>
         </Snackbar>
       )}

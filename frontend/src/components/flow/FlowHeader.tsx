@@ -12,7 +12,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Paper
+  Paper,
+  Typography
 } from './MaterialImports';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
@@ -107,7 +108,7 @@ const FlowHeader: React.FC<FlowHeaderProps> = ({
               color="success"
             />
           }
-          label={isActive ? "Active" : "Inactive"}
+          label={<Typography>{isActive ? "Active" : "Inactive"}</Typography>}
         />
         
         <Box sx={{ display: 'flex', gap: 1 }}>

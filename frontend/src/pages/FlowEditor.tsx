@@ -8,7 +8,7 @@ import ReactFlow, {
   Panel
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Box, Paper, Typography, Divider, IconButton } from '@mui/material';
+import { Box, Paper, Typography, Divider, IconButton } from '../components/flow/MaterialImports';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -213,7 +213,7 @@ const PropertiesPanel = () => {
       <NodeProperties 
         nodeId={selectedNode.id}
         nodeType={selectedNode.type || ''}
-        nodeData={selectedNode.data}
+        nodeData={selectedNode.data || {}}
         onUpdate={(newData) => updateNodeData(selectedNode.id, newData)} 
         onClose={() => setSelectedNode(null)}
       />
