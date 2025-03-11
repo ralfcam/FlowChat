@@ -81,6 +81,29 @@ class Message:
         message.updated_at = data.get('updated_at', datetime.datetime.utcnow())
         return message
     
+    @classmethod
+    def create(cls, data):
+        """Create a new message and save it to the database."""
+        # Extract required fields
+        content = data.get('content')
+        if not content:
+            raise ValueError("Message content is required")
+            
+        # Create message instance
+        message = cls(
+            content=content,
+            from_user=data.get('user_id') or data.get('from_user'),
+            to_contact=data.get('contact_id') or data.get('to_contact'),
+            message_type=data.get('message_type', 'text'),
+            status=data.get('status', 'pending'),
+            metadata=data.get('metadata', {})
+        )
+        
+        # Save to database
+        message.save()
+        
+        return message
+    
     def save(self):
         """Save the message to the database."""
         db = get_db()
@@ -109,6 +132,26 @@ class Message:
         )
         
         return result
+    
+    @classmethod
+    def update(cls, message_id, data):
+        """Update a message with new data."""
+        message = cls.find_by_id(message_id)
+        if not message:
+            return None
+            
+        # Update fields
+        for key, value in data.items():
+            if hasattr(message, key):
+                setattr(message, key, value)
+                
+        # Update timestamp
+        message.updated_at = datetime.datetime.utcnow()
+        
+        # Save changes
+        message.save()
+        
+        return message
     
     def delete(self):
         """Delete the message from the database."""

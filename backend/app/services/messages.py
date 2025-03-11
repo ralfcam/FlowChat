@@ -63,10 +63,9 @@ class WhatsAppService:
             
         # Create message record
         message = Message.create({
-            'contact_id': contact.id,
-            'user_id': from_user.id if from_user else None,
-            'direction': 'outbound',
             'content': content,
+            'to_contact': contact.phone,
+            'from_user': from_user,
             'message_type': message_type,
             'status': 'pending',
             'metadata': metadata or {}
@@ -82,7 +81,7 @@ class WhatsAppService:
                 to=contact.phone,
                 body=content,
                 media_url=media_url,
-                message_id=message.id
+                message_id=str(message._id)
             )
         else:
             # Use direct WhatsApp API
@@ -93,35 +92,46 @@ class WhatsAppService:
                 'message_id': message.id
             })
             
-        # Update message with provider response
+        # Update message with provider's message ID
         if result and result.get('success'):
-            Message.update(message.id, {
+            # Get the message ID from the result
+            provider_message_id = result.get('message_sid') or result.get('sid')
+            
+            # Update the message in the database
+            Message.update(str(message._id), {
                 'status': 'sent',
-                'provider_message_id': result.get('message_sid') or result.get('message_id'),
                 'metadata': {
                     **message.metadata,
                     'provider': provider,
-                    'provider_response': result
+                    'provider_message_id': provider_message_id
                 }
             })
+            
+            # Return success response
             return {
                 'success': True,
-                'message_id': message.id,
-                'provider_message_id': result.get('message_sid') or result.get('message_id')
+                'message_id': str(message._id),
+                'provider_message_id': provider_message_id
             }
         else:
-            Message.update(message.id, {
+            # Get error message from result
+            error_message = result.get('error') if result else 'Unknown error'
+            
+            # Update the message in the database
+            Message.update(str(message._id), {
                 'status': 'failed',
                 'metadata': {
                     **message.metadata,
                     'provider': provider,
-                    'error': result.get('error') if result else 'Unknown error'
+                    'error': error_message
                 }
             })
+            
+            # Return error response
             return {
                 'success': False,
-                'message_id': message.id,
-                'error': result.get('error') if result else 'Unknown error'
+                'message_id': str(message._id),
+                'error': error_message
             }
     
     @classmethod

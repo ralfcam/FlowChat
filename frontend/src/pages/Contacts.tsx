@@ -36,6 +36,15 @@ interface Contact {
 const mockContacts: Contact[] = [
   {
     id: '1',
+    name: 'Test WhatsApp',
+    phone: '+34611151646',
+    email: 'whatsapp@test.com',
+    tags: ['whatsapp', 'test'],
+    lastContact: new Date().toISOString().split('T')[0],
+    status: 'active',
+  },
+  {
+    id: '2',
     name: 'John Doe',
     phone: '+1234567890',
     email: 'john@example.com',
@@ -44,7 +53,7 @@ const mockContacts: Contact[] = [
     status: 'active',
   },
   {
-    id: '2',
+    id: '3',
     name: 'Jane Smith',
     phone: '+0987654321',
     email: 'jane@example.com',
@@ -53,7 +62,7 @@ const mockContacts: Contact[] = [
     status: 'active',
   },
   {
-    id: '3',
+    id: '4',
     name: 'Bob Johnson',
     phone: '+1122334455',
     email: 'bob@example.com',
@@ -62,7 +71,7 @@ const mockContacts: Contact[] = [
     status: 'inactive',
   },
   {
-    id: '4',
+    id: '5',
     name: 'Alice Brown',
     phone: '+5566778899',
     email: 'alice@example.com',
@@ -71,7 +80,7 @@ const mockContacts: Contact[] = [
     status: 'active',
   },
   {
-    id: '5',
+    id: '6',
     name: 'Charlie Wilson',
     phone: '+1231231234',
     email: 'charlie@example.com',

@@ -57,6 +57,28 @@ class Contact:
         return cls.from_dict(data) if data else None
     
     @classmethod
+    def create(cls, data):
+        """Create a new contact and save it to the database."""
+        # Extract required fields
+        phone = data.get('phone')
+        if not phone:
+            raise ValueError("Phone number is required")
+            
+        # Create contact instance
+        contact = cls(
+            phone=phone,
+            name=data.get('name'),
+            email=data.get('email'),
+            tags=data.get('tags', []),
+            metadata=data.get('metadata', {})
+        )
+        
+        # Save to database
+        contact.save()
+        
+        return contact
+    
+    @classmethod
     def search(cls, query=None, tags=None, limit=50, skip=0):
         """Search for contacts based on query text or tags."""
         db = get_db()

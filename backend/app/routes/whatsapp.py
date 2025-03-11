@@ -70,12 +70,31 @@ def send_message():
             media_url=media_url
         )
         
-        if result.get('success'):
-            req_logger.info("Message sent successfully", extra={'result': result})
-            return jsonify(result), 200
+        # Check if the message was sent successfully
+        if isinstance(result, dict):
+            # It's a dictionary result
+            if result.get('success'):
+                req_logger.info("Message sent successfully", extra={'result': result})
+                return jsonify(result), 200
+            else:
+                req_logger.error("Failed to send message", extra={'error': result.get('error')})
+                return jsonify(result), 400
+        elif hasattr(result, '_id'):
+            # It's a Message object, create a success response
+            response = {
+                'success': True,
+                'message_id': str(result._id),
+                'status': getattr(result, 'status', 'sent')
+            }
+            req_logger.info("Message sent successfully", extra={'message_id': str(result._id)})
+            return jsonify(response), 200
         else:
-            req_logger.error("Failed to send message", extra={'error': result.get('error'), 'result': result})
-            return jsonify(result), 400
+            # Unknown result type
+            req_logger.error("Failed to send message: Unknown result type", extra={'result_type': type(result).__name__})
+            return jsonify({
+                'success': False,
+                'error': "Unknown result from message service"
+            }), 400
             
     except Exception as e:
         req_logger.exception(f"Error in /send endpoint: {str(e)}")

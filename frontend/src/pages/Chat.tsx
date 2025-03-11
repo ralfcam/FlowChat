@@ -14,6 +14,7 @@ import {
   Badge,
   InputAdornment,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SearchIcon from '@mui/icons-material/Search';
@@ -86,6 +87,14 @@ interface ChatMessage {
 const mockContacts: Contact[] = [
   {
     id: '1',
+    name: 'Test WhatsApp',
+    avatar: '',
+    lastMessage: 'Hello from WhatsApp integration test',
+    lastMessageTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    unread: 1,
+  },
+  {
+    id: '2',
     name: 'John Doe',
     avatar: '',
     lastMessage: 'Hey, how are you?',
@@ -93,7 +102,7 @@ const mockContacts: Contact[] = [
     unread: 2,
   },
   {
-    id: '2',
+    id: '3',
     name: 'Jane Smith',
     avatar: '',
     lastMessage: 'Can we schedule a meeting?',
@@ -101,7 +110,7 @@ const mockContacts: Contact[] = [
     unread: 0,
   },
   {
-    id: '3',
+    id: '4',
     name: 'Bob Johnson',
     avatar: '',
     lastMessage: 'Thanks for your help!',
@@ -109,7 +118,7 @@ const mockContacts: Contact[] = [
     unread: 0,
   },
   {
-    id: '4',
+    id: '5',
     name: 'Alice Brown',
     avatar: '',
     lastMessage: 'I need more information about your product',
@@ -120,6 +129,29 @@ const mockContacts: Contact[] = [
 
 const mockMessages: Record<string, ChatMessage[]> = {
   '1': [
+    {
+      id: '1',
+      text: 'Hello! This is a WhatsApp integration test.',
+      timestamp: new Date(Date.now() - 300000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isOutgoing: false,
+      status: 'read',
+    },
+    {
+      id: '2',
+      text: 'Hi! I\'m testing the WhatsApp integration with your number.',
+      timestamp: new Date(Date.now() - 240000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isOutgoing: true,
+      status: 'delivered',
+    },
+    {
+      id: '3',
+      text: 'This message should be sent to +34611151646 when I click send.',
+      timestamp: new Date(Date.now() - 60000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isOutgoing: true,
+      status: 'sent',
+    },
+  ],
+  '2': [
     {
       id: '1',
       text: 'Hey there!',
@@ -178,15 +210,17 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>(
     selectedContact ? mockMessages[selectedContact.id] || [] : []
   );
+  const [sendingMessage, setSendingMessage] = useState(false);
 
   const handleContactSelect = (contact: Contact) => {
     setSelectedContact(contact);
     setMessages(mockMessages[contact.id] || []);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!messageText.trim() || !selectedContact) return;
 
+    // Create new message object
     const newMessage: ChatMessage = {
       id: Date.now().toString(),
       text: messageText,
@@ -195,8 +229,52 @@ const Chat: React.FC = () => {
       status: 'sent',
     };
 
+    // Add message to UI immediately
     setMessages([...messages, newMessage]);
+    const sentText = messageText;
     setMessageText('');
+    
+    // For the test WhatsApp contact, actually send the message via API
+    if (selectedContact.id === '1') {
+      setSendingMessage(true);
+      try {
+        // Get the phone number from the contact in Contacts.tsx
+        // For now we're hardcoding it since we know it's your number
+        const phoneNumber = '+34611151646';
+        
+        const response = await fetch('/api/whatsapp/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: phoneNumber,
+            body: sentText,
+            type: 'text'
+          }),
+        });
+        
+        if (response.ok) {
+          // Update message status to delivered
+          setMessages(prev => 
+            prev.map(msg => 
+              msg.id === newMessage.id 
+                ? { ...msg, status: 'delivered' as const } 
+                : msg
+            )
+          );
+          console.log('Message sent successfully');
+        } else {
+          console.error('Failed to send message:', await response.text());
+          // You might want to show an error to the user
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
+        // You might want to show an error to the user
+      } finally {
+        setSendingMessage(false);
+      }
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -324,9 +402,15 @@ const Chat: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 multiline
                 maxRows={4}
+                disabled={sendingMessage}
               />
-              <IconButton color="primary" onClick={handleSendMessage} sx={{ ml: 1 }}>
-                <SendIcon />
+              <IconButton 
+                color="primary" 
+                onClick={handleSendMessage} 
+                sx={{ ml: 1 }}
+                disabled={sendingMessage || !messageText.trim()}
+              >
+                {sendingMessage ? <CircularProgress size={24} /> : <SendIcon />}
               </IconButton>
             </MessageInput>
           </>

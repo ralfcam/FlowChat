@@ -21,3 +21,63 @@ webpack compiled [1m[32msuccessfully[39m[22m
 Files successfully emitted, waiting for typecheck results...
 Issues checking in progress...
 No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+No issues found.
+Compiling...
+Compiled with warnings.
+
+[eslint] 
+src\pages\Chat.tsx
+  Line 212:10:  'sendingMessage' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+[1m[33mWARNING[39m[22m in [1m[eslint] 
+src\pages\Chat.tsx
+  Line 212:10:  'sendingMessage' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+[39m[22m
+
+webpack compiled with [1m[33m1 warning[39m[22m
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/pages/Chat.tsx:16:3
+TS2305: Module '"@mui/material"' has no exported member 'CircularProgress'.
+  [0m [90m 14 |[39m   [33mBadge[39m[33m,[39m
+   [90m 15 |[39m   [33mInputAdornment[39m[33m,[39m
+  [31m[1m>[22m[39m[90m 16 |[39m   [33mCircularProgress[39m[33m,[39m
+   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 17 |[39m } [36mfrom[39m [32m'@mui/material'[39m[33m;[39m
+   [90m 18 |[39m [36mimport[39m [33mSendIcon[39m [36mfrom[39m [32m'@mui/icons-material/Send'[39m[33m;[39m
+   [90m 19 |[39m [36mimport[39m [33mAttachFileIcon[39m [36mfrom[39m [32m'@mui/icons-material/AttachFile'[39m[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/pages/Chat.tsx:16:3
+TS2305: Module '"@mui/material"' has no exported member 'CircularProgress'.
+  [0m [90m 14 |[39m   [33mBadge[39m[33m,[39m
+   [90m 15 |[39m   [33mInputAdornment[39m[33m,[39m
+  [31m[1m>[22m[39m[90m 16 |[39m   [33mCircularProgress[39m[33m,[39m
+   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 17 |[39m } [36mfrom[39m [32m'@mui/material'[39m[33m;[39m
+   [90m 18 |[39m [36mimport[39m [33mSendIcon[39m [36mfrom[39m [32m'@mui/icons-material/Send'[39m[33m;[39m
+   [90m 19 |[39m [36mimport[39m [33mAttachFileIcon[39m [36mfrom[39m [32m'@mui/icons-material/AttachFile'[39m[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+No issues found.

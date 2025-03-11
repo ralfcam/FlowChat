@@ -45,14 +45,22 @@ class ContextLogger:
         return ContextLogger(self.logger.name, new_context)
         
     def _get_full_context(self):
-        """
-        Get the full context for the log message, including request
-        and user information if available.
+        """Get the full context for logging, including request context if available."""
+        # Start with the initialization context
+        full_context = self.context.copy() if self.context else {}
         
-        Returns:
-            dict: The full context.
-        """
-        full_context = self.context.copy()
+        # Reserved keys in LogRecord that we should not overwrite
+        reserved_keys = [
+            'args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename',
+            'funcName', 'levelname', 'levelno', 'lineno', 'module',
+            'msecs', 'message', 'msg', 'name', 'pathname', 'process',
+            'processName', 'relativeCreated', 'stack_info', 'thread', 'threadName'
+        ]
+        
+        # Prefix any keys that would clash with reserved keys
+        for key in list(full_context.keys()):
+            if key in reserved_keys:
+                full_context[f'ctx_{key}'] = full_context.pop(key)
         
         # Add request information if in a request context
         if has_request_context():
@@ -60,9 +68,9 @@ class ContextLogger:
             full_context['request_id'] = getattr(g, 'request_id', None)
             
             # Basic request info
-            full_context['method'] = request.method
-            full_context['path'] = request.path
-            full_context['endpoint'] = request.endpoint
+            full_context['http_method'] = request.method
+            full_context['http_path'] = request.path
+            full_context['http_endpoint'] = request.endpoint
             
             # Add user information if available
             if hasattr(g, 'user') and g.user:
@@ -133,17 +141,22 @@ def log_operation(logger=None, operation_name=None):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             # Create a logger if not provided
-            nonlocal logger
-            if logger is None:
-                logger = ContextLogger(func.__module__)
+            nonlocal logger, operation_name
+            local_logger = logger
+            
+            if isinstance(local_logger, str):
+                # If logger is a string, create a new logger with that name
+                local_logger = ContextLogger(local_logger)
+            elif local_logger is None:
+                # If logger is None, create a new logger with the function's module name
+                local_logger = ContextLogger(func.__module__)
                 
             # Use function name if operation name not provided
-            nonlocal operation_name
             if operation_name is None:
                 operation_name = func.__name__
                 
             # Log start of operation
-            logger.info(f"Starting operation: {operation_name}")
+            local_logger.info(f"Starting operation: {operation_name}")
             
             # Track timing
             start_time = time.time()
@@ -157,30 +170,32 @@ def log_operation(logger=None, operation_name=None):
                 duration_ms = round(duration * 1000, 2)
                 
                 # Log successful completion
-                logger.info(
+                local_logger.info(
                     f"Completed operation: {operation_name}",
                     duration_ms=duration_ms
                 )
-                
                 return result
-                
             except Exception as e:
-                # Calculate duration
+                # Calculate duration even if there was an error
                 duration = time.time() - start_time
                 duration_ms = round(duration * 1000, 2)
                 
                 # Log failure
-                logger.exception(
+                local_logger.exception(
                     f"Failed operation: {operation_name} - {str(e)}",
                     duration_ms=duration_ms,
-                    error=str(e),
-                    error_type=type(e).__name__
+                    error=str(e)
                 )
-                
                 # Re-raise the exception
                 raise
-                
+        
         return wrapper
+    
+    # Handle case where decorator is used without parentheses
+    if callable(logger) and operation_name is None:
+        func, logger = logger, None
+        return decorator(func)
+    
     return decorator
 
 
