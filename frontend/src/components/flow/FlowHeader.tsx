@@ -3,173 +3,166 @@ import {
   Box,
   TextField,
   Button,
-  Typography,
-} from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
+  Switch,
+  FormControlLabel,
+  Tooltip,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Paper
+} from './MaterialImports';
 import SaveIcon from '@mui/icons-material/Save';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-interface FlowHeaderProps {
+export interface FlowHeaderProps {
   flowName: string;
   flowDescription: string;
-  isFlowActive: boolean;
+  isActive: boolean;
   isDirty: boolean;
   onFlowNameChange: (name: string) => void;
   onFlowDescriptionChange: (description: string) => void;
-  onToggleFlowActive: (active: boolean) => void;
-  onSaveFlow: () => void;
-  onNewFlow: () => void;
-  onDeleteFlow: () => void;
+  onToggleActive: () => void;
+  onSave: () => void;
+  onNew: () => void;
+  onDelete: () => void;
 }
 
 const FlowHeader: React.FC<FlowHeaderProps> = ({
   flowName,
   flowDescription,
-  isFlowActive,
+  isActive,
   isDirty,
   onFlowNameChange,
   onFlowDescriptionChange,
-  onToggleFlowActive,
-  onSaveFlow,
-  onNewFlow,
-  onDeleteFlow,
+  onToggleActive,
+  onSave,
+  onNew,
+  onDelete
 }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const handleFlowNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onFlowNameChange(event.target.value);
-  };
-
-  const handleFlowDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onFlowDescriptionChange(event.target.value);
-  };
-
-  const handleToggleActive = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onToggleFlowActive(event.target.checked);
-  };
-
-  const handleDeleteClick = () => {
+  const handleOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
-    onDeleteFlow();
   };
 
-  const handleDeleteCancel = () => {
+  const handleDelete = () => {
+    onDelete();
     setDeleteDialogOpen(false);
   };
 
   return (
-    <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <Paper
+      elevation={2}
+      sx={{
+        p: 2,
+        mb: 2,
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'stretch', md: 'center' },
+        gap: 2
+      }}
+    >
+      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
         <TextField
           label="Flow Name"
+          value={flowName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFlowNameChange(e.target.value)}
           variant="outlined"
           size="small"
-          value={flowName}
-          onChange={handleFlowNameChange}
-          sx={{ mr: 2, flexGrow: 1 }}
+          fullWidth
+          sx={{ maxWidth: { md: 300 } }}
         />
-
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={isFlowActive}
-                onChange={handleToggleActive}
-                color={isFlowActive ? 'success' : 'default'}
-              />
-            }
-            label={
-              <Typography variant="body2" color={isFlowActive ? 'success.main' : 'text.secondary'}>
-                {isFlowActive ? 'Active' : 'Inactive'}
-              </Typography>
-            }
-            sx={{ mr: 2 }}
-          />
-
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<SaveIcon />}
-            onClick={onSaveFlow}
-            disabled={!isDirty}
-            sx={{ mr: 1 }}
-          >
-            Save
-          </Button>
-
-          <Button
-            variant="outlined"
-            startIcon={<AddIcon />}
-            onClick={onNewFlow}
-            sx={{ mr: 1 }}
-          >
-            New
-          </Button>
-
+        <TextField
+          label="Description"
+          value={flowDescription}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFlowDescriptionChange(e.target.value)}
+          variant="outlined"
+          size="small"
+          fullWidth
+          multiline
+          rows={2}
+        />
+      </Box>
+      
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' }, 
+        alignItems: 'center',
+        gap: 2,
+        ml: { md: 2 }
+      }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={isActive}
+              onChange={onToggleActive}
+              color="success"
+            />
+          }
+          label={isActive ? "Active" : "Inactive"}
+        />
+        
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Tooltip title="Save Flow">
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SaveIcon />}
+              onClick={onSave}
+              disabled={!isDirty}
+            >
+              Save
+            </Button>
+          </Tooltip>
+          
+          <Tooltip title="New Flow">
+            <IconButton
+              color="primary"
+              onClick={onNew}
+            >
+              <AddIcon />
+            </IconButton>
+          </Tooltip>
+          
           <Tooltip title="Delete Flow">
-            <IconButton color="error" onClick={handleDeleteClick}>
+            <IconButton
+              color="error"
+              onClick={handleOpenDeleteDialog}
+            >
               <DeleteIcon />
             </IconButton>
           </Tooltip>
         </Box>
       </Box>
-
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <TextField
-          label="Description"
-          variant="outlined"
-          size="small"
-          value={flowDescription}
-          onChange={handleFlowDescriptionChange}
-          fullWidth
-          multiline
-          maxRows={2}
-        />
-
-        <Tooltip title="Flow tips">
-          <IconButton sx={{ ml: 1 }}>
-            <HelpOutlineIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-
-      {/* Delete Confirmation Dialog */}
+      
       <Dialog
         open={deleteDialogOpen}
-        onClose={handleDeleteCancel}
-        aria-labelledby="delete-dialog-title"
-        aria-describedby="delete-dialog-description"
+        onClose={handleCloseDeleteDialog}
       >
-        <DialogTitle id="delete-dialog-title">Delete Flow?</DialogTitle>
+        <DialogTitle>Delete Flow</DialogTitle>
         <DialogContent>
-          <DialogContentText id="delete-dialog-description">
+          <DialogContentText>
             Are you sure you want to delete this flow? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" autoFocus>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Paper>
   );
 };
 
