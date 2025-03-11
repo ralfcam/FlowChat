@@ -42,7 +42,9 @@ const theme = createTheme({
 });
 
 // Development mode settings
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDevelopment = process.env.NODE_ENV === 'development';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const bypassAuthInDevelopment = true;
 
 const App: React.FC = () => {
