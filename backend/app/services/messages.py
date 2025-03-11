@@ -334,45 +334,143 @@ class WhatsAppService:
         
     @classmethod
     def process_incoming_webhook(cls, webhook_data, provider='direct'):
-        """Process incoming webhook data from various providers."""
-        if provider == 'twilio':
-            # Process Twilio webhook
-            if cls._twilio_service is None:
-                cls._twilio_service = TwilioService()
-                
-            processed_data = cls._twilio_service.process_incoming_message(webhook_data)
+        """
+        Process incoming webhook data from various providers.
+        
+        Args:
+            webhook_data: The webhook data from the provider
+            provider: The provider name ('twilio' or 'direct')
             
-            # Store the message
-            contact = Contact.find_by_phone(processed_data['from'])
-            if not contact:
-                contact = Contact.create({
-                    'phone': processed_data['from'],
-                    'source': 'twilio_webhook'
+        Returns:
+            dict: Result of the webhook processing
+        """
+        log = service_logger.with_context(operation='process_webhook')
+        log.info(f"Processing incoming webhook from {provider}", extra={'provider': provider})
+        
+        try:
+            if provider == 'twilio':
+                # Extract basic information from Twilio webhook
+                message_sid = webhook_data.get('MessageSid', webhook_data.get('SmsSid'))
+                from_number = webhook_data.get('From')
+                body = webhook_data.get('Body', '')
+                num_media = int(webhook_data.get('NumMedia', '0'))
+                
+                if not message_sid or not from_number:
+                    log.error("Missing required fields in Twilio webhook", extra={'data': webhook_data})
+                    return {
+                        'success': False,
+                        'error': 'Missing required fields in webhook data'
+                    }
+                
+                log.info(f"Received message from {from_number}", extra={
+                    'message_sid': message_sid,
+                    'has_media': num_media > 0,
+                    'body_length': len(body) if body else 0
                 })
                 
-            # Create message record
-            message = Message.create({
-                'contact_id': contact.id,
-                'direction': 'inbound',
-                'content': processed_data['body'],
-                'message_type': 'text' if not processed_data.get('media_urls') else 'media',
-                'status': 'received',
-                'provider_message_id': processed_data['message_sid'],
-                'metadata': {
-                    'provider': 'twilio',
-                    'media_urls': processed_data.get('media_urls', []),
-                    'webhook_data': webhook_data
+                # Collect media URLs if present
+                media_urls = []
+                for i in range(num_media):
+                    media_url = webhook_data.get(f'MediaUrl{i}')
+                    if media_url:
+                        media_urls.append(media_url)
+                
+                # Process the message using receive_message method
+                result = cls.receive_message({
+                    'MessageSid': message_sid,
+                    'From': from_number,
+                    'Body': body,
+                    'MediaUrl0': media_urls[0] if media_urls else None,
+                    'MediaUrls': media_urls
+                })
+                
+                if hasattr(result, '_id'):
+                    # Successfully created message
+                    log.info(f"Successfully stored incoming message", extra={'message_id': str(result._id)})
+                    return {
+                        'success': True,
+                        'message_id': str(result._id)
+                    }
+                else:
+                    # Error occurred
+                    log.error(f"Failed to process incoming message", extra={'error': result.get('error')})
+                    return result
+                
+            elif provider == 'direct':
+                # Process WhatsApp Business API webhook
+                # Extract basic information
+                try:
+                    # This is for Meta WhatsApp Business API format
+                    entry = webhook_data.get('entry', [{}])[0]
+                    changes = entry.get('changes', [{}])[0]
+                    value = changes.get('value', {})
+                    
+                    if 'messages' in value:
+                        # This is a message webhook
+                        message = value['messages'][0]
+                        
+                        message_id = message.get('id')
+                        from_number = message.get('from')
+                        timestamp = message.get('timestamp')
+                        
+                        # Get message content based on type
+                        message_type = message.get('type', 'text')
+                        body = ''
+                        media_url = None
+                        
+                        if message_type == 'text':
+                            body = message.get('text', {}).get('body', '')
+                        elif message_type == 'image':
+                            media_url = message.get('image', {}).get('url')
+                            body = message.get('image', {}).get('caption', '')
+                        elif message_type == 'audio':
+                            media_url = message.get('audio', {}).get('url')
+                        elif message_type == 'video':
+                            media_url = message.get('video', {}).get('url')
+                            body = message.get('video', {}).get('caption', '')
+                        
+                        # Process the message
+                        result = cls.receive_message({
+                            'message_id': message_id,
+                            'from': from_number,
+                            'body': body,
+                            'media_url': media_url,
+                            'timestamp': timestamp,
+                            'type': message_type
+                        })
+                        
+                        if hasattr(result, '_id'):
+                            # Successfully created message
+                            return {
+                                'success': True,
+                                'message_id': str(result._id)
+                            }
+                        else:
+                            # Error occurred
+                            return result
+                    else:
+                        log.warning("Unrecognized direct webhook format", extra={'data': webhook_data})
+                        return {
+                            'success': False,
+                            'error': 'Unrecognized webhook format'
+                        }
+                    
+                except (KeyError, IndexError) as e:
+                    log.error(f"Error parsing direct webhook: {str(e)}", extra={'data': webhook_data})
+                    return {
+                        'success': False,
+                        'error': f'Error parsing webhook: {str(e)}'
+                    }
+            else:
+                log.warning(f"Unknown provider: {provider}")
+                return {
+                    'success': False,
+                    'error': f'Unknown provider: {provider}'
                 }
-            })
             
+        except Exception as e:
+            log.exception(f"Error processing webhook: {str(e)}")
             return {
-                'success': True,
-                'message_id': message.id,
-                'contact_id': contact.id
-            }
-            
-        else:
-            # Process direct WhatsApp webhook
-            # Implementation will depend on the WhatsApp API webhook format
-            # This is a placeholder for the existing implementation
-            pass 
+                'success': False,
+                'error': str(e)
+            } 

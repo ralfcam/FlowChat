@@ -2,13 +2,15 @@
 """
 Test script for WhatsApp API integration with FlowChat.
 
-This script sends test messages through the WhatsApp API endpoint.
+This script tests both sending and receiving WhatsApp messages.
 """
 import argparse
 import json
 import sys
 import requests
+import time
 from pprint import pprint
+from datetime import datetime
 
 
 def send_whatsapp_message(
@@ -112,7 +114,7 @@ def check_chat_history(
                 print(f"Found {len(response_data['data'])} messages")
                 for i, msg in enumerate(response_data['data']):
                     print(f"\nMessage {i+1}:")
-                    print(f"  Content: {msg['content']}")
+                    print(f"  Content: {msg.get('content', 'No content')}")
                     print(f"  Direction: {msg['direction']}")
                     print(f"  Status: {msg['status']}")
                     print(f"  Timestamp: {msg['timestamp']}")
@@ -124,6 +126,108 @@ def check_chat_history(
             print(response.text)
             return {"success": False, "error": "Invalid JSON response", "text": response.text}
             
+    except requests.exceptions.RequestException as e:
+        print(f"\nRequest error: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def simulate_incoming_message(
+    from_number: str,
+    message_body: str,
+    message_sid: str = None,
+    base_url: str = "http://localhost:5000"
+):
+    """
+    Simulate an incoming WhatsApp message by calling the webhook directly.
+    
+    Args:
+        from_number: Sender's phone number in E.164 format
+        message_body: Message content
+        message_sid: Message SID (generated if not provided)
+        base_url: Base URL of the API
+    
+    Returns:
+        dict: API response
+    """
+    # Ensure phone number is properly formatted
+    if not from_number.startswith('+'):
+        from_number = f"+{from_number}"
+    
+    # Generate a message SID if not provided
+    if not message_sid:
+        message_sid = f"SM{int(time.time())}{hash(from_number) % 100000:05d}"
+    
+    # Create a Twilio-like webhook payload
+    webhook_payload = {
+        "MessageSid": message_sid,
+        "From": from_number,
+        "To": "+14155238886",  # Twilio number
+        "Body": message_body,
+        "Direction": "inbound",
+        "NumMedia": "0",
+        "NumSegments": "1",
+        "SmsStatus": "received",
+        "AccountSid": "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "ApiVersion": "2010-04-01"
+    }
+    
+    url = f"{base_url}/api/whatsapp/webhook"
+    
+    print(f"Simulating incoming message from {from_number}...")
+    print(f"URL: {url}")
+    print(f"Message body: {message_body}")
+    
+    try:
+        # Set content type to application/x-www-form-urlencoded to mimic Twilio
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        
+        response = requests.post(url, data=webhook_payload, headers=headers, timeout=30)
+        
+        print(f"\nStatus code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        
+        return {
+            "success": response.status_code == 200,
+            "status_code": response.status_code,
+            "response_text": response.text
+        }
+        
+    except requests.exceptions.RequestException as e:
+        print(f"\nRequest error: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def test_webhook_verification(
+    base_url: str = "http://localhost:5000"
+):
+    """
+    Test the webhook verification endpoint.
+    
+    Args:
+        base_url: Base URL of the API
+    
+    Returns:
+        dict: API response
+    """
+    url = f"{base_url}/api/whatsapp/webhook"
+    
+    print(f"Testing webhook verification...")
+    print(f"URL: {url}")
+    
+    try:
+        response = requests.get(url, timeout=30)
+        
+        print(f"\nStatus code: {response.status_code}")
+        print(f"Response text: {response.text}")
+        
+        return {
+            "success": response.status_code == 200,
+            "status_code": response.status_code,
+            "response_text": response.text
+        }
+        
     except requests.exceptions.RequestException as e:
         print(f"\nRequest error: {e}")
         return {"success": False, "error": str(e)}
@@ -151,6 +255,16 @@ def main():
     chat_parser.add_argument("--limit", "-l", type=int, default=10, help="Maximum number of messages to retrieve")
     chat_parser.add_argument("--url", default="http://localhost:5000", help="Base URL of the API")
     
+    # Simulate incoming message command
+    receive_parser = subparsers.add_parser("receive", help="Simulate an incoming WhatsApp message")
+    receive_parser.add_argument("--from", "-f", dest="from_number", required=True, help="Sender's phone number (E.164 format)")
+    receive_parser.add_argument("--message", "-m", required=True, help="Message content")
+    receive_parser.add_argument("--url", default="http://localhost:5000", help="Base URL of the API")
+    
+    # Test webhook verification command
+    webhook_parser = subparsers.add_parser("webhook", help="Test webhook verification")
+    webhook_parser.add_argument("--url", default="http://localhost:5000", help="Base URL of the API")
+    
     # Parse arguments
     args = parser.parse_args()
     
@@ -171,6 +285,16 @@ def main():
         check_chat_history(
             contact_id=args.contact,
             limit=args.limit,
+            base_url=args.url
+        )
+    elif args.command == "receive":
+        simulate_incoming_message(
+            from_number=args.from_number,
+            message_body=args.message,
+            base_url=args.url
+        )
+    elif args.command == "webhook":
+        test_webhook_verification(
             base_url=args.url
         )
     else:
