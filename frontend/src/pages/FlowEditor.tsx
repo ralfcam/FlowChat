@@ -1,15 +1,11 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
-const FlowEditor = () => {
+const FlowEditor: React.FC = () => {
   return (
-    <Box sx={{ padding: 2 }}>
-      <Typography variant="h4">Flow Editor</Typography>
-      <Typography variant="body1">
-        This is a placeholder for the Flow Editor page. It will be implemented in the future.
-      </Typography>
-    </Box>
+    <div>
+      <h1>Flow Editor</h1>
+      {/* Flow editor content will be added here */}
+    </div>
   );
 };
 
