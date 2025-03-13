@@ -43,6 +43,7 @@ call :check_python
 call :check_node
 call :setup_venv
 call :check_env_file
+call :clear_logs
 call :start_backend_proc
 call :start_frontend_proc
 goto end
@@ -61,6 +62,7 @@ call :check_python
 call :check_node
 call :setup_venv
 call :check_env_file
+call :clear_logs
 call :start_backend_proc
 call :start_frontend_proc
 goto end
@@ -91,6 +93,7 @@ call :check_python
 call :check_node
 call :setup_venv
 call :check_env_file
+call :clear_logs
 call :start_backend_dev_proc
 call :start_frontend_proc
 goto end
@@ -187,6 +190,30 @@ if not exist "%BACKEND_DIR%\.env" (
 )
 exit /b 0
 
+:clear_logs
+echo Clearing all log files...
+if exist "%BACKEND_LOG%" (
+    echo. > "%BACKEND_LOG%"
+    echo Backend log cleared.
+)
+if exist "%DEV_BACKEND_LOG%" (
+    echo. > "%DEV_BACKEND_LOG%"
+    echo Development backend log cleared.
+)
+if exist "%LOGS_DIR%\flowchat.log" (
+    echo. > "%LOGS_DIR%\flowchat.log"
+    echo Main flowchat log cleared.
+)
+if exist "%LOGS_DIR%\error.log" (
+    echo. > "%LOGS_DIR%\error.log"
+    echo Error log cleared.
+)
+if exist "%FRONTEND_LOG%" (
+    echo. > "%FRONTEND_LOG%"
+    echo Frontend log cleared.
+)
+exit /b 0
+
 :start_backend_proc
 echo Starting FlowChat Backend...
 
@@ -222,7 +249,7 @@ if %errorlevel% neq 0 (
 
 :: Start with START /B to run in background
 echo Starting Flask application...
-start /B cmd /c "python app.py >> "%BACKEND_LOG%" 2>&1"
+start /B cmd /c "python app.py > "%BACKEND_LOG%" 2>&1"
 for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
     set lastpid=%%a
 )
@@ -288,7 +315,7 @@ echo set FLASK_DEBUG=1 >> "%TEMP%\run_flowchat_dev.bat"
 echo set DEV_AUTH_BYPASS=true >> "%TEMP%\run_flowchat_dev.bat"
 echo python app.py >> "%TEMP%\run_flowchat_dev.bat"
 
-start /B cmd /c "%TEMP%\run_flowchat_dev.bat" >> "%DEV_BACKEND_LOG%" 2>&1
+start /B cmd /c "%TEMP%\run_flowchat_dev.bat" > "%DEV_BACKEND_LOG%" 2>&1
 
 for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
     set lastpid=%%a
@@ -324,7 +351,7 @@ if not exist "%FRONTEND_DIR%\node_modules" (
 
 :: Start the frontend
 cd "%FRONTEND_DIR%"
-start /B cmd /c "npm start >> "%FRONTEND_LOG%" 2>&1"
+start /B cmd /c "npm start > "%FRONTEND_LOG%" 2>&1"
 for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
     set lastpid=%%a
 )

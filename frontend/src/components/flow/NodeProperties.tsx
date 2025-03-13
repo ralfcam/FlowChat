@@ -172,6 +172,35 @@ const NodeProperties: React.FC<NodePropertiesProps> = ({
 
   // Wait node properties
   const renderWaitNodeProperties = () => {
+    // Determine which property names to use
+    const timeoutValue = nodeData.timeout !== undefined ? nodeData.timeout :
+                         nodeData.duration !== undefined ? nodeData.duration :
+                         nodeData.waitTime !== undefined ? nodeData.waitTime : 
+                         5;
+                         
+    const timeUnitValue = nodeData.timeoutUnit || nodeData.timeUnit || nodeData.waitUnit || 'minutes';
+    
+    // Function to update both naming conventions for maximum compatibility
+    const handleTimeoutValueChange = (value: number) => {
+      // Update both timeout and duration for compatibility
+      onUpdate({ 
+        timeout: value,
+        duration: value,
+        // Include the legacy property if it was being used
+        ...(nodeData.waitTime !== undefined && { waitTime: value })
+      });
+    };
+    
+    const handleTimeUnitChange = (unit: string) => {
+      // Update both timeoutUnit and timeUnit for compatibility
+      onUpdate({ 
+        timeoutUnit: unit,
+        timeUnit: unit,
+        // Include the legacy property if it was being used
+        ...(nodeData.waitUnit !== undefined && { waitUnit: unit })
+      });
+    };
+    
     return (
       <>
         <TextField
@@ -186,8 +215,10 @@ const NodeProperties: React.FC<NodePropertiesProps> = ({
           <TextField
             label="Duration"
             type="number"
-            value={nodeData.duration || 5}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUpdate({ duration: Number(e.target.value) })}
+            value={timeoutValue}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+              handleTimeoutValueChange(Number(e.target.value))
+            }
             inputProps={{ min: 1 }}
             sx={{ flex: 1 }}
           />
@@ -195,9 +226,9 @@ const NodeProperties: React.FC<NodePropertiesProps> = ({
           <FormControl sx={{ flex: 1 }}>
             <InputLabel>Unit</InputLabel>
             <Select
-              value={nodeData.timeUnit || 'minutes'}
+              value={timeUnitValue}
               label="Unit"
-              onChange={(e: SelectChangeEvent) => onUpdate({ timeUnit: e.target.value })}
+              onChange={(e: SelectChangeEvent) => handleTimeUnitChange(e.target.value)}
             >
               <MenuItem value="seconds">Seconds</MenuItem>
               <MenuItem value="minutes">Minutes</MenuItem>

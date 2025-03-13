@@ -2,9 +2,9 @@
 > flowchat-frontend@0.1.0 start
 > react-scripts start
 
-(node:31208) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:35128) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-(node:31208) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:35128) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 Starting the development server...
 
 Compiled successfully!
@@ -23,944 +23,349 @@ No issues found.
 Compiling...
 Compiled successfully!
 webpack compiled [1m[32msuccessfully[39m[22m
-No issues found.
 Compiling...
+No issues found.
 Compiled successfully!
 webpack compiled [1m[32msuccessfully[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-ERROR in src/context/FlowContext.tsx:414:5
-TS2322: Type '(flowId: string, newName?: string) => Promise<FlowData | undefined>' is not assignable to type '(flowId: string, newName?: string | undefined) => Promise<void>'.
-  Type 'Promise<FlowData | undefined>' is not assignable to type 'Promise<void>'.
-    Type 'FlowData | undefined' is not assignable to type 'void'.
-      Type 'FlowData' is not assignable to type 'void'.
-  [0m [90m 412 |[39m     loadFlows[33m,[39m
-   [90m 413 |[39m     loadPresetFlows[33m,[39m
-  [31m[1m>[22m[39m[90m 414 |[39m     duplicateFlow[33m,[39m
-   [90m     |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 415 |[39m     createFromPreset
-   [90m 416 |[39m   }[33m;[39m
-   [90m 417 |[39m   [0m
-
-ERROR in src/context/FlowContext.tsx:415:5
-TS2322: Type '(presetId: string, newName?: string) => Promise<FlowData | undefined>' is not assignable to type '(presetId: string, newName?: string | undefined) => Promise<void>'.
-  Type 'Promise<FlowData | undefined>' is not assignable to type 'Promise<void>'.
-  [0m [90m 413 |[39m     loadPresetFlows[33m,[39m
-   [90m 414 |[39m     duplicateFlow[33m,[39m
-  [31m[1m>[22m[39m[90m 415 |[39m     createFromPreset
-   [90m     |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 416 |[39m   }[33m;[39m
-   [90m 417 |[39m   
-   [90m 418 |[39m   [36mreturn[39m ([0m
-
+No issues found.
 Compiling...
 Compiled successfully!
 webpack compiled [1m[32msuccessfully[39m[22m
 No issues found.
 Compiling...
-Failed to compile.
-
-Attempted import error: 'Tabs' is not exported from './MaterialImports' (imported as 'Tabs').
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m346:41-45[39m[22m
-[1mexport 'Tabs' (imported as 'Tabs') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m350:44-47[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m356:43-46[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-webpack compiled with [1m[31m3 errors[39m[22m and [1m[33m1 warning[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-ERROR in src/components/flow/FlowHeader.tsx:22:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tabs'.
-  [0m [90m 20 |[39m   [33mInputLabel[39m[33m,[39m
-   [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 22 |[39m   [33mTabs[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m[0m
-
-ERROR in src/components/flow/FlowHeader.tsx:23:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tab'.
-  [0m [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-   [90m 22 |[39m   [33mTabs[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m
-   [90m 26 |[39m [36mimport[39m [33mSaveIcon[39m [36mfrom[39m [32m'@mui/icons-material/Save'[39m[33m;[39m[0m
-
-Compiling...
-Failed to compile.
-
-Attempted import error: 'Tabs' is not exported from './MaterialImports' (imported as 'Tabs').
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m346:41-45[39m[22m
-[1mexport 'Tabs' (imported as 'Tabs') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m350:44-47[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m356:43-46[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-webpack compiled with [1m[31m3 errors[39m[22m and [1m[33m1 warning[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-ERROR in src/components/flow/FlowHeader.tsx:22:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tabs'.
-  [0m [90m 20 |[39m   [33mInputLabel[39m[33m,[39m
-   [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 22 |[39m   [33mTabs[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m[0m
-
-ERROR in src/components/flow/FlowHeader.tsx:23:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tab'.
-  [0m [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-   [90m 22 |[39m   [33mTabs[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m
-   [90m 26 |[39m [36mimport[39m [33mSaveIcon[39m [36mfrom[39m [32m'@mui/icons-material/Save'[39m[33m;[39m[0m
-
-Compiling...
-Failed to compile.
-
-Attempted import error: 'Tabs' is not exported from './MaterialImports' (imported as 'Tabs').
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m346:41-45[39m[22m
-[1mexport 'Tabs' (imported as 'Tabs') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m350:44-47[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m356:43-46[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-webpack compiled with [1m[31m3 errors[39m[22m and [1m[33m1 warning[39m[22m
-ERROR in src/components/flow/FlowHeader.tsx:22:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tabs'.
-  [0m [90m 20 |[39m   [33mInputLabel[39m[33m,[39m
-   [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 22 |[39m   [33mTabs[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m[0m
-
-ERROR in src/components/flow/FlowHeader.tsx:23:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tab'.
-  [0m [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-   [90m 22 |[39m   [33mTabs[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m
-   [90m 26 |[39m [36mimport[39m [33mSaveIcon[39m [36mfrom[39m [32m'@mui/icons-material/Save'[39m[33m;[39m[0m
-
-Compiling...
-Failed to compile.
-
-Attempted import error: 'Tabs' is not exported from './MaterialImports' (imported as 'Tabs').
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m346:41-45[39m[22m
-[1mexport 'Tabs' (imported as 'Tabs') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m350:44-47[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-[1m[31mERROR[39m[22m in [1m./src/components/flow/FlowHeader.tsx[39m[22m [1m[32m356:43-46[39m[22m
-[1mexport 'Tab' (imported as 'Tab') was [1m[31mnot found[39m[22m[1m in './MaterialImports' (possible exports: [1m[32mAlert, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, FormControl, FormControlLabel, IconButton, InputLabel, Menu, MenuItem, Paper, Select, Snackbar, Switch, TextField, Tooltip, Typography[39m[22m[1m)[39m[22m
-
-webpack compiled with [1m[31m3 errors[39m[22m and [1m[33m1 warning[39m[22m
-ERROR in src/components/flow/FlowHeader.tsx:22:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tabs'.
-  [0m [90m 20 |[39m   [33mInputLabel[39m[33m,[39m
-   [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 22 |[39m   [33mTabs[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m[0m
-
-ERROR in src/components/flow/FlowHeader.tsx:23:3
-TS2305: Module '"./MaterialImports"' has no exported member 'Tab'.
-  [0m [90m 21 |[39m   [33mCircularProgress[39m[33m,[39m
-   [90m 22 |[39m   [33mTabs[39m[33m,[39m
-  [31m[1m>[22m[39m[90m 23 |[39m   [33mTab[39m[33m,[39m
-   [90m    |[39m   [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 24 |[39m   [33mDivider[39m
-   [90m 25 |[39m } [36mfrom[39m [32m'./MaterialImports'[39m[33m;[39m
-   [90m 26 |[39m [36mimport[39m [33mSaveIcon[39m [36mfrom[39m [32m'@mui/icons-material/Save'[39m[33m;[39m[0m
-
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\components\flow\FlowHeader.tsx
-  Line 24:3:   'Divider' is defined but never used                              @typescript-eslint/no-unused-vars
-  Line 112:9:  'handleOpenPresetNameDialog' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-src\pages\FlowEditor.tsx
-  Line 509:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 510:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 512:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 545:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 550:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 577:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 581:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 588:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-
-> flowchat-frontend@0.1.0 start
-> react-scripts start
-
-(node:9672) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-(node:9672) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-Starting the development server...
-
 Compiled successfully!
-
-You can now view flowchat-frontend in the browser.
-
-  http://localhost:3000
-
-Note that the development build is not optimized.
-To create a production build, use npm run build.
-
 webpack compiled [1m[32msuccessfully[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
 No issues found.
 Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\context\FlowContext.tsx
-  Line 462:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 462:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-
-> flowchat-frontend@0.1.0 start
-> react-scripts start
-
-(node:19812) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-(Use `node --trace-deprecation ...` to show where the warning was created)
-(node:19812) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
-Starting the development server...
-
-Compiled with warnings.
-
-[eslint] 
-src\context\FlowContext.tsx
-  Line 478:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 478:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\context\FlowContext.tsx
-  Line 478:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 478:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
-Compiling...
-Compiled with warnings.
-
-[eslint] 
-src\context\FlowContext.tsx
-  Line 440:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 440:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-ERROR in src/context/FlowContext.tsx:473:5
-TS2322: Type '() => Promise<FlowData[]>' is not assignable to type '() => Promise<void>'.
-  Type 'Promise<FlowData[]>' is not assignable to type 'Promise<void>'.
-    Type 'FlowData[]' is not assignable to type 'void'.
-  [0m [90m 471 |[39m     loadFlow[33m,[39m
-   [90m 472 |[39m     loadFlows[33m,[39m
-  [31m[1m>[22m[39m[90m 473 |[39m     loadPresetFlows[33m,[39m
-   [90m     |[39m     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
-   [90m 474 |[39m     duplicateFlow[33m,[39m
-   [90m 475 |[39m     createFromPreset
-   [90m 476 |[39m   }[33m;[39m[0m
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
 Compiling...
-Compiled with warnings.
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
-[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 575:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 580:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 607:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 611:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 618:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-No issues found.
 Compiling...
-Compiled with warnings.
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
-[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
+ERROR in src/context/FlowContext.tsx:340:29
+TS18048: 'a' is possibly 'undefined'.
+  [0m [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+  [31m[1m>[22m[39m[90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                             [31m[1m^[22m[39m
+   [90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m[0m
 
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
+ERROR in src/context/FlowContext.tsx:340:53
+TS18048: 'a' is possibly 'undefined'.
+  [0m [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+  [31m[1m>[22m[39m[90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                                                     [31m[1m^[22m[39m
+   [90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m[0m
 
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+ERROR in src/context/FlowContext.tsx:341:29
+TS18048: 'b' is possibly 'undefined'.
+  [0m [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                             [31m[1m^[22m[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m
+   [90m 344 |[39m           })[33m;[39m[0m
 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
+ERROR in src/context/FlowContext.tsx:341:53
+TS18048: 'b' is possibly 'undefined'.
+  [0m [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                                                     [31m[1m^[22m[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m
+   [90m 344 |[39m           })[33m;[39m[0m
 
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
-Files successfully emitted, waiting for typecheck results...
-Issues checking in progress...
-No issues found.
 Compiling...
-Compiled with warnings.
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
-[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m?[39m[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
-
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
-
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
-
-[39m[22m
-
-webpack compiled with [1m[33m1 warning[39m[22m
 Compiling...
-No issues found.
-Compiled with warnings.
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows[33m:[39m [33mFlowData[39m[]) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
-[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m:[39m [33mFlowData[39m[33m,[39m b[33m:[39m [33mFlowData[39m) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
+ERROR in src/context/FlowContext.tsx:339:38
+TS2345: Argument of type '(a: FlowData, b: FlowData) => number' is not assignable to parameter of type '(a: FlowData | undefined, b: FlowData | undefined) => number'.
+  Types of parameters 'a' and 'a' are incompatible.
+    Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+      Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+  [31m[1m>[22m[39m[90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m:[39m [33mFlowData[39m[33m,[39m b[33m:[39m [33mFlowData[39m) [33m=>[39m {
+   [90m     |[39m                                      [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m[0m
 
-Search for the keywords to learn more about each warning.
-To ignore, add // eslint-disable-next-line to the line before.
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows[33m:[39m [33mFlowData[39m[]) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
 
-[1m[33mWARNING[39m[22m in [1m[eslint] 
-src\context\FlowContext.tsx
-  Line 437:6:  React Hook useCallback has an unnecessary dependency: 'flowService'. Either exclude it or remove the dependency array. Outer scope values like 'flowService' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
 
-src\pages\FlowEditor.tsx
-  Line 510:5:  'nodes' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 511:5:  'edges' is assigned a value but never used                    @typescript-eslint/no-unused-vars
-  Line 512:5:  'onNodesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 513:5:  'onEdgesChange' is assigned a value but never used            @typescript-eslint/no-unused-vars
-  Line 514:5:  'onConnect' is assigned a value but never used                @typescript-eslint/no-unused-vars
-  Line 582:9:  'onDragOver' is assigned a value but never used               @typescript-eslint/no-unused-vars
-  Line 587:9:  'onDrop' is assigned a value but never used                   @typescript-eslint/no-unused-vars
-  Line 614:9:  'onNodeClick' is assigned a value but never used              @typescript-eslint/no-unused-vars
-  Line 618:9:  'handleCloseNotification' is assigned a value but never used  @typescript-eslint/no-unused-vars
-  Line 625:9:  'onNodeToolbarAction' is assigned a value but never used      @typescript-eslint/no-unused-vars
+ERROR in src/context/FlowContext.tsx:340:29
+TS18048: 'a' is possibly 'undefined'.
+  [0m [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+  [31m[1m>[22m[39m[90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                             [31m[1m^[22m[39m
+   [90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m[0m
 
-[39m[22m
+ERROR in src/context/FlowContext.tsx:340:53
+TS18048: 'a' is possibly 'undefined'.
+  [0m [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+  [31m[1m>[22m[39m[90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                                                     [31m[1m^[22m[39m
+   [90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m[0m
 
-webpack compiled with [1m[33m1 warning[39m[22m
+ERROR in src/context/FlowContext.tsx:341:29
+TS18048: 'b' is possibly 'undefined'.
+  [0m [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                             [31m[1m^[22m[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m
+   [90m 344 |[39m           })[33m;[39m[0m
+
+ERROR in src/context/FlowContext.tsx:341:53
+TS18048: 'b' is possibly 'undefined'.
+  [0m [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 341 |[39m               [36mconst[39m dateB [33m=[39m b[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(b[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m
+   [90m     |[39m                                                     [31m[1m^[22m[39m
+   [90m 342 |[39m               [36mreturn[39m dateB [33m-[39m dateA[33m;[39m [90m// Sort by most recent first[39m
+   [90m 343 |[39m             })[33m;[39m
+   [90m 344 |[39m           })[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows[33m:[39m [33mFlowData[39m[]) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
+
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m?[39m[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows[33m:[39m [33mFlowData[39m[]) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
+
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m?[39m[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:330:20
+TS2345: Argument of type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to parameter of type 'SetStateAction<FlowData[]>'.
+  Type '(currentFlows: FlowData[]) => (FlowData | undefined)[]' is not assignable to type '(prevState: FlowData[]) => FlowData[]'.
+    Type '(FlowData | undefined)[]' is not assignable to type 'FlowData[]'.
+      Type 'FlowData | undefined' is not assignable to type 'FlowData'.
+        Type 'undefined' is not assignable to type 'FlowData'.
+  [0m [90m 328 |[39m           
+   [90m 329 |[39m           [90m// Update flows list - sort by most recently updated[39m
+  [31m[1m>[22m[39m[90m 330 |[39m           setFlows((currentFlows[33m:[39m [33mFlowData[39m[]) [33m=>[39m {
+   [90m     |[39m                    [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 331 |[39m             [90m// If we have no flows yet, just return the new flow[39m
+   [90m 332 |[39m             [36mif[39m ([33m![39mcurrentFlows [33m||[39m currentFlows[33m.[39mlength [33m===[39m [35m0[39m) {
+   [90m 333 |[39m               [36mreturn[39m [savedFlow][33m;[39m[0m
+
+ERROR in src/context/FlowContext.tsx:337:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 335 |[39m             
+   [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+  [31m[1m>[22m[39m[90m 337 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 338 |[39m             [36mconst[39m updatedFlows [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow][33m;[39m
+   [90m 339 |[39m             [36mreturn[39m updatedFlows[33m.[39msort((a[33m,[39m b) [33m=>[39m {
+   [90m 340 |[39m               [36mconst[39m dateA [33m=[39m a[33m?[39m[33m.[39mupdated_at [33m?[39m [36mnew[39m [33mDate[39m(a[33m.[39mupdated_at)[33m.[39mgetTime() [33m:[39m [35m0[39m[33m;[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
+ERROR in src/context/FlowContext.tsx:338:28
+TS18048: 'savedFlow' is possibly 'undefined'.
+  [0m [90m 336 |[39m             [90m// Otherwise, update the existing flows list[39m
+   [90m 337 |[39m             [90m// At this point we know savedFlow is defined and has _id because of the outer if condition[39m
+  [31m[1m>[22m[39m[90m 338 |[39m             [36mconst[39m flowId [33m=[39m savedFlow[33m.[39m_id[33m;[39m
+   [90m     |[39m                            [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 339 |[39m             [36mconst[39m updatedFlows[33m:[39m [33mFlowData[39m[] [33m=[39m [[33m...[39mcurrentFlows[33m.[39mfilter(f [33m=>[39m f[33m.[39m_id [33m!==[39m flowId)[33m,[39m savedFlow [36mas[39m [33mFlowData[39m][33m;[39m
+   [90m 340 |[39m             
+   [90m 341 |[39m             [90m// Sort by most recently updated[39m[0m
+
+Compiling...
+Compiled successfully!
+webpack compiled [1m[32msuccessfully[39m[22m
 No issues found.

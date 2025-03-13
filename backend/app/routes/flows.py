@@ -394,7 +394,7 @@ def create_simple_preset():
     try:
         print("OPEN ENDPOINT: Creating a simple preset flow without authentication")
         
-        # Create a simple welcome flow
+        # Create a simple welcome flow with node properties matching React Flow expectations
         flow = Flow(
             name="Simple Welcome Flow",
             description="A basic welcome flow template created by the open endpoint",
@@ -405,7 +405,7 @@ def create_simple_preset():
                     "position": {"x": 250, "y": 100},
                     "data": {
                         "label": "Welcome Message",
-                        "content": "Hello! Welcome to our service. How can we help you today?",
+                        "message": "Hello! Welcome to our service. How can we help you today?",  # Using 'message' instead of 'content'
                         "type": "text"
                     }
                 },
@@ -415,8 +415,8 @@ def create_simple_preset():
                     "position": {"x": 250, "y": 250},
                     "data": {
                         "label": "Wait for Response",
-                        "waitTime": 0,
-                        "waitUnit": "minutes"
+                        "timeout": 0,              # Using 'timeout' instead of 'waitTime'
+                        "timeoutUnit": "minutes"   # Using 'timeoutUnit' instead of 'waitUnit'
                     }
                 }
             ],
@@ -438,6 +438,7 @@ def create_simple_preset():
         
         flow.save()
         print(f"OPEN ENDPOINT: Created simple preset flow: {flow.name}")
+        print(f"OPEN ENDPOINT: Node structure: {flow.nodes[0]['data']}")
         
         # Get all presets to return
         all_presets = Flow.find_presets()

@@ -131,6 +131,25 @@ class FlowService {
           // Standard endpoint response handling
           if (response.flows && response.flows.length > 0) {
             console.log(`Successfully fetched ${response.flows.length} preset flows from ${endpoint}`);
+            // Log the structure of the first flow for debugging
+            if (response.flows[0]) {
+              console.log('Sample preset flow structure:', {
+                id: response.flows[0]._id,
+                name: response.flows[0].name,
+                nodeCount: response.flows[0].nodes?.length || 0,
+                edgeCount: response.flows[0].edges?.length || 0
+              });
+              
+              // Check if the node data structure is correct
+              if (response.flows[0].nodes && response.flows[0].nodes.length > 0) {
+                const sampleNode = response.flows[0].nodes[0];
+                console.log('Sample node structure:', {
+                  id: sampleNode.id,
+                  type: sampleNode.type,
+                  dataKeys: sampleNode.data ? Object.keys(sampleNode.data) : []
+                });
+              }
+            }
             return response.flows;
           } else {
             console.warn(`No preset flows returned from API endpoint ${endpoint}`);
@@ -142,15 +161,91 @@ class FlowService {
         }
       }
       
-      console.error('All preset flow fetch attempts failed');
-      if (lastError) throw lastError;
-      return [];
+      // If all endpoints fail, try to create default presets directly
+      console.log('All preset flow fetch attempts failed, creating default presets locally');
+      return this.createDefaultPresetsLocally();
     } catch (error) {
       console.error('Error fetching preset flows:', error);
       return [];  // Return empty array instead of throwing to avoid breaking UI
     }
   }
   
+  /**
+   * Create default preset flows locally (used when API fails)
+   * This creates a simple preset flow without API access
+   */
+  createDefaultPresetsLocally(): FlowData[] {
+    console.log('Creating local preset flows as fallback');
+    
+    // Generate unique IDs for nodes
+    const nodeId1 = `node_${Date.now()}_1`;
+    const nodeId2 = `node_${Date.now()}_2`;
+    const nodeId3 = `node_${Date.now()}_3`;
+    
+    // Create a local preset flow
+    const welcomeFlow: FlowData = {
+      _id: `local_preset_${Date.now()}`,
+      name: "Simple Welcome Flow",
+      description: "A locally generated welcome flow template",
+      nodes: [
+        {
+          id: nodeId1,
+          type: "messageNode",
+          position: { x: 250, y: 100 },
+          data: {
+            label: "Welcome Message",
+            message: "Hello! Welcome to our service. How can I help you today?",
+            type: "text"
+          }
+        },
+        {
+          id: nodeId2,
+          type: "waitNode",
+          position: { x: 250, y: 250 },
+          data: {
+            label: "Wait for Response",
+            timeout: 5,
+            timeoutUnit: "minutes",
+            waitForReply: true
+          }
+        },
+        {
+          id: nodeId3,
+          type: "messageNode",
+          position: { x: 250, y: 400 },
+          data: {
+            label: "Response Message",
+            message: "Thank you for your message. How else can I assist you?",
+            type: "text"
+          }
+        }
+      ],
+      edges: [
+        {
+          id: `edge_${Date.now()}_1`,
+          source: nodeId1,
+          target: nodeId2,
+          sourceHandle: null,
+          targetHandle: null
+        },
+        {
+          id: `edge_${Date.now()}_2`,
+          source: nodeId2,
+          target: nodeId3,
+          sourceHandle: "reply",
+          targetHandle: null
+        }
+      ],
+      is_active: false,
+      is_preset: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    console.log('Created local preset flow:', welcomeFlow.name);
+    return [welcomeFlow];
+  }
+
   /**
    * Duplicate a flow
    * @param flowId Flow ID to duplicate
@@ -166,76 +261,6 @@ class FlowService {
     } catch (error) {
       console.error(`Error duplicating flow ${flowId}:`, error);
       throw error;
-    }
-  }
-
-  /**
-   * Create default preset flows (development mode only)
-   * This is a direct way to create preset flows if the other methods fail
-   */
-  async createDefaultPresets(): Promise<FlowData[]> {
-    try {
-      if (process.env.NODE_ENV !== 'development') {
-        console.warn('createDefaultPresets should only be used in development mode');
-        return [];
-      }
-      
-      console.log('Manually triggering creation of default preset flows');
-      
-      // Create a simple welcome flow preset
-      const welcomeFlow: Partial<FlowData> = {
-        name: "Welcome Flow Template",
-        description: "A simple welcome flow to get started",
-        nodes: [
-          {
-            id: `node_${Date.now()}_1`,
-            type: "messageNode",
-            position: { x: 250, y: 100 },
-            data: {
-              label: "Welcome Message",
-              content: "Hello! Welcome to our service. How can we help you today?",
-              type: "text"
-            }
-          },
-          {
-            id: `node_${Date.now()}_2`,
-            type: "waitNode",
-            position: { x: 250, y: 250 },
-            data: {
-              label: "Wait for Response",
-              waitTime: 0,
-              waitUnit: "minutes"
-            }
-          }
-        ],
-        edges: [],
-        is_active: false,
-        is_preset: true
-      };
-      
-      // Add an edge connecting the nodes
-      if (welcomeFlow.nodes && welcomeFlow.nodes.length >= 2) {
-        welcomeFlow.edges = [
-          {
-            id: `edge_${Date.now()}_1`,
-            source: welcomeFlow.nodes[0].id,
-            target: welcomeFlow.nodes[1].id
-          }
-        ];
-      }
-      
-      // Create the preset flow via direct POST
-      const response = await apiService.post<{ success: boolean; flow: FlowData }>('/v1/dev/flows/create_preset', welcomeFlow);
-      
-      if (response && response.success) {
-        console.log('Successfully created manual preset flow');
-        return await this.getPresetFlows();
-      }
-      
-      return [];
-    } catch (error) {
-      console.error('Error creating default preset flows:', error);
-      return [];
     }
   }
 }

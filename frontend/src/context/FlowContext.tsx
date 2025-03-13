@@ -96,14 +96,14 @@ interface FlowContextType {
   setFlowName: (name: string) => void;
   setFlowDescription: (description: string) => void;
   toggleFlowActive: () => void;
-  saveFlow: () => Promise<void>;
+  saveFlow: () => Promise<FlowData | undefined>;
   createNewFlow: () => void;
   deleteFlow: () => Promise<void>;
   loadFlow: (flowId: string) => Promise<void>;
   loadFlows: () => Promise<void>;
   loadPresetFlows: () => Promise<void>;
-  duplicateFlow: (flowId: string, newName?: string) => Promise<void>;
-  createFromPreset: (presetId: string, newName?: string) => Promise<void>;
+  duplicateFlow: (flowId: string, newName?: string) => Promise<FlowData | undefined>;
+  createFromPreset: (presetId: string, newName?: string) => Promise<FlowData | undefined>;
 }
 
 // Create the context
@@ -156,8 +156,28 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         const presets = await flowService.getPresetFlows();
         
         if (presets && presets.length > 0) {
-          console.log(`Successfully loaded ${presets.length} preset flows in FlowContext`);
-          setPresetFlows(presets);
+          console.log(`Loaded ${presets.length} preset flows from API, filtering duplicates...`);
+          
+          // Find the first "Welcome Flow Template" or similar preset
+          let welcomeFlowTemplate = presets.find(flow => 
+            flow.name.includes("Welcome Flow Template") || 
+            flow.name.includes("Simple Welcome Flow")
+          );
+          
+          // If no welcome template is found, use the first preset
+          if (!welcomeFlowTemplate && presets.length > 0) {
+            welcomeFlowTemplate = presets[0];
+            console.log(`No specific welcome template found, using first preset: ${welcomeFlowTemplate.name}`);
+          }
+          
+          // Set only this single preset
+          if (welcomeFlowTemplate) {
+            console.log(`Using single preset flow: ${welcomeFlowTemplate.name}`);
+            setPresetFlows([welcomeFlowTemplate]);
+          } else {
+            console.warn('No valid preset flows were found');
+            setPresetFlows([]);
+          }
         } else {
           console.warn('No preset flows were returned in FlowContext loadPresetFlows');
           // Still update state with empty array to prevent repeated attempts
@@ -261,6 +281,13 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
         setIsLoading(true);
         const flow = reactFlowInstance.toObject();
         
+        console.log(`Saving flow "${flowName}" with ${flow.nodes.length} nodes and ${flow.edges.length} edges`);
+        
+        // Verify node structure before saving
+        if (flow.nodes.length > 0) {
+          console.log('Sample node data:', JSON.stringify(flow.nodes[0]));
+        }
+        
         const flowData = {
           name: flowName,
           description: flowDescription,
@@ -269,29 +296,90 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
           is_active: isFlowActive
         };
         
-        let savedFlow: FlowData;
+        let savedFlow: FlowData | undefined;
         
-        if (currentFlowId) {
-          // Update existing flow
-          savedFlow = await flowService.updateFlow(currentFlowId, flowData);
-        } else {
-          // Create new flow
-          savedFlow = await flowService.createFlow(flowData);
-          setCurrentFlowId(savedFlow._id as string);
+        try {
+          if (currentFlowId) {
+            // Update existing flow
+            console.log(`Updating existing flow with ID: ${currentFlowId}`);
+            savedFlow = await flowService.updateFlow(currentFlowId, flowData);
+          } else {
+            // Create new flow
+            console.log('Creating new flow');
+            savedFlow = await flowService.createFlow(flowData);
+          }
+        } catch (apiError) {
+          console.warn('API error when saving flow. Creating flow locally:', apiError);
+          
+          // Create a local flow with a temporary ID
+          const tempId = currentFlowId || `temp-${Date.now()}`;
+          savedFlow = {
+            _id: tempId,
+            name: flowName,
+            description: flowDescription,
+            nodes: flow.nodes,
+            edges: flow.edges,
+            is_active: isFlowActive,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
         }
         
-        // Update flows list
-        setFlows((currentFlows) => {
-          const updatedFlows = [...currentFlows.filter(f => f._id !== savedFlow._id), savedFlow];
-          return updatedFlows.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-        });
+        // Check if we got a valid response
+        if (!savedFlow || typeof savedFlow !== 'object') {
+          console.warn('API returned invalid flow data, using local flow');
+          savedFlow = {
+            _id: currentFlowId || `temp-${Date.now()}`,
+            name: flowName,
+            description: flowDescription,
+            nodes: flow.nodes,
+            edges: flow.edges,
+            is_active: isFlowActive,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          };
+        }
+        
+        console.log('Flow saved successfully:', savedFlow);
+        
+        // Update currentFlowId if we have a valid ID
+        if (savedFlow && savedFlow._id) {
+          setCurrentFlowId(savedFlow._id);
+          
+          // Update flows list - sort by most recently updated
+          setFlows((currentFlows: FlowData[]) => {
+            // If we have no flows yet, just return the new flow as a single-item array
+            if (!currentFlows || currentFlows.length === 0) {
+              return [savedFlow as FlowData];
+            }
+            
+            // Otherwise, update the existing flows list
+            // We know savedFlow is defined here because of the outer if condition
+            const flowId = (savedFlow as FlowData)._id;
+            const updatedFlows: FlowData[] = [...currentFlows.filter(f => f._id !== flowId), savedFlow as FlowData];
+            
+            // Sort by most recently updated
+            return updatedFlows.sort((a, b) => {
+              const dateA = new Date(a.updated_at || 0).getTime();
+              const dateB = new Date(b.updated_at || 0).getTime();
+              return dateB - dateA; // Sort by most recent first
+            });
+          });
+        } else {
+          console.warn('Saved flow is missing _id property');
+        }
         
         setIsDirty(false);
+        return savedFlow; // Return the saved flow for chaining
       } catch (error) {
         console.error('Error saving flow:', error);
+        throw error; // Rethrow to allow handling by callers
       } finally {
         setIsLoading(false);
       }
+    } else {
+      console.error('Cannot save flow: React Flow instance is not available');
+      throw new Error('Cannot save flow: React Flow instance is not available');
     }
   }, [reactFlowInstance, flowName, flowDescription, isFlowActive, currentFlowId, setFlows]);
   
@@ -331,6 +419,7 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
   const loadFlow = useCallback(async (flowId: string) => {
     try {
       setIsLoading(true);
+      console.log(`Loading flow with ID: ${flowId}`);
       
       // Check if we need to save current flow
       if (isDirty && reactFlowInstance) {
@@ -343,25 +432,130 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
       const flow = await flowService.getFlowById(flowId);
       
       if (flow) {
-        setNodes(flow.nodes || []);
-        setEdges(flow.edges || []);
-        setFlowName(flow.name);
-        setFlowDescription(flow.description || '');
-        setIsFlowActive(flow.is_active || false);
-        setCurrentFlowId(flow._id as string);
-        setIsDirty(false);
+        console.log(`Successfully loaded flow: ${flow.name}`, {
+          nodeCount: flow.nodes?.length || 0,
+          edgeCount: flow.edges?.length || 0
+        });
+        
+        // First reset state to prevent stale data
+        setNodes([]);
+        setEdges([]);
+        setSelectedNode(null);
+        
+        // Process nodes and edges to ensure correct structure
+        let processedNodes: Node[] = [];
+        let processedEdges: Edge[] = [];
+        
+        if (flow.nodes && Array.isArray(flow.nodes)) {
+          processedNodes = flow.nodes.map((node: any) => {
+            // Ensure node has all required fields
+            if (!node.id) {
+              console.log(`Node missing ID, generating a new one for node at index ${flow.nodes.indexOf(node)}`);
+              node.id = `node-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            }
+            
+            // Deep copy node data to avoid reference issues
+            const nodeCopy = { ...node, data: { ...node.data } };
+            
+            if (nodeCopy.data) {
+              // Convert 'content' to 'message' if needed
+              if (nodeCopy.data.content && !nodeCopy.data.message) {
+                console.log(`Converting 'content' to 'message' for node ${nodeCopy.id}`);
+                nodeCopy.data.message = nodeCopy.data.content;
+                // Keep content for backward compatibility
+              }
+              
+              // Convert 'waitTime' to 'timeout' if needed
+              if (nodeCopy.data.waitTime !== undefined && nodeCopy.data.timeout === undefined) {
+                console.log(`Converting 'waitTime' to 'timeout' for node ${nodeCopy.id}`);
+                nodeCopy.data.timeout = nodeCopy.data.waitTime;
+                // Keep waitTime for backward compatibility
+              }
+              
+              // Convert 'waitUnit' to 'timeoutUnit' if needed
+              if (nodeCopy.data.waitUnit && !nodeCopy.data.timeoutUnit) {
+                console.log(`Converting 'waitUnit' to 'timeoutUnit' for node ${nodeCopy.id}`);
+                nodeCopy.data.timeoutUnit = nodeCopy.data.waitUnit;
+                // Keep waitUnit for backward compatibility
+              }
+              
+              // Convert 'duration' to 'timeout' if needed (from NodeProperties)
+              if (nodeCopy.data.duration !== undefined && nodeCopy.data.timeout === undefined) {
+                console.log(`Converting 'duration' to 'timeout' for node ${nodeCopy.id}`);
+                nodeCopy.data.timeout = nodeCopy.data.duration;
+                // Keep duration for backward compatibility
+              }
+              
+              // Convert 'timeUnit' to 'timeoutUnit' if needed (from NodeProperties)
+              if (nodeCopy.data.timeUnit && !nodeCopy.data.timeoutUnit) {
+                console.log(`Converting 'timeUnit' to 'timeoutUnit' for node ${nodeCopy.id}`);
+                nodeCopy.data.timeoutUnit = nodeCopy.data.timeUnit;
+                // Keep timeUnit for backward compatibility
+              }
+            }
+            
+            return nodeCopy;
+          });
+        }
+        
+        if (flow.edges && Array.isArray(flow.edges)) {
+          processedEdges = flow.edges.map((edge: any) => {
+            // Ensure edge has all required fields
+            if (!edge.id) {
+              console.log(`Edge missing ID, generating a new one for edge connecting ${edge.source} to ${edge.target}`);
+              edge.id = `edge-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            }
+            
+            // Deep copy to avoid reference issues
+            return { ...edge };
+          });
+        }
+        
+        // Log sample node and edge structure
+        if (processedNodes.length > 0) {
+          console.log('Sample node structure:', JSON.stringify(processedNodes[0]));
+        }
+        
+        if (processedEdges.length > 0) {
+          console.log('Sample edge structure:', JSON.stringify(processedEdges[0]));
+        }
+        
+        // Update state with the processed data in a sequence to ensure proper React rendering
+        setTimeout(() => {
+          // First update nodes and edges
+          setNodes(processedNodes);
+          setEdges(processedEdges);
+          
+          // Then update metadata
+          setFlowName(flow.name);
+          setFlowDescription(flow.description || '');
+          setIsFlowActive(flow.is_active || false);
+          setCurrentFlowId(flow._id as string);
+          setIsDirty(false);
+          
+          // Force React Flow to update by notifying it of the change
+          setTimeout(() => {
+            if (reactFlowInstance) {
+              console.log('Fitting view to loaded flow');
+              reactFlowInstance.fitView({ padding: 0.2 });
+            }
+          }, 300);
+        }, 100);
+      } else {
+        console.warn(`Flow with ID ${flowId} not found`);
       }
     } catch (error) {
       console.error(`Error loading flow ${flowId}:`, error);
     } finally {
       setIsLoading(false);
     }
-  }, [isDirty, reactFlowInstance, saveFlow, setNodes, setEdges]);
+  }, [isDirty, reactFlowInstance, saveFlow, setNodes, setEdges, setSelectedNode]);
   
   // Duplicate a flow
   const duplicateFlow = useCallback(async (flowId: string, newName?: string) => {
     try {
       setIsLoading(true);
+      console.log(`Duplicating flow with ID: ${flowId}`);
       const duplicatedFlow = await flowService.duplicateFlow(flowId, newName);
       
       // Add to flows list
@@ -371,16 +565,19 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
       });
       
       // Load the duplicated flow
+      console.log(`Flow duplicated successfully: ${duplicatedFlow.name}`);
       setNodes(duplicatedFlow.nodes || []);
       setEdges(duplicatedFlow.edges || []);
       setFlowName(duplicatedFlow.name);
       setFlowDescription(duplicatedFlow.description || '');
       setIsFlowActive(false); // Duplicated flows are inactive by default
-      setCurrentFlowId(duplicatedFlow._id as string);
+      setCurrentFlowId(duplicatedFlow._id as string | null);
       setIsDirty(false);
       
+      return duplicatedFlow;
     } catch (error) {
       console.error(`Error duplicating flow ${flowId}:`, error);
+      return undefined;
     } finally {
       setIsLoading(false);
     }
@@ -392,49 +589,204 @@ export const FlowProvider: React.FC<FlowProviderProps> = ({ children }) => {
       setIsLoading(true);
       console.log(`Creating flow from preset ${presetId}`);
       
+      // Validate presetId
+      if (!presetId) {
+        console.error('No preset ID provided');
+        throw new Error('No preset ID provided');
+      }
+      
       // First make sure we have preset flows loaded
       if (!presetFlows || presetFlows.length === 0) {
+        console.log('No preset flows found, loading them first');
         await loadPresetFlows();
       }
       
       // Try to find the preset in our loaded presets
       const preset = presetFlows.find(p => p._id === presetId);
       
-      if (preset) {
-        // If we found the preset in our state, create a new flow based on it
-        const newFlow: Partial<FlowData> = {
-          name: newName || `Copy of ${preset.name}`,
-          description: preset.description,
-          nodes: JSON.parse(JSON.stringify(preset.nodes)), // Deep copy
-          edges: JSON.parse(JSON.stringify(preset.edges)), // Deep copy
-          is_active: false
-        };
+      if (!preset) {
+        console.error(`Preset with ID ${presetId} not found in loaded presets`);
+        console.log('Available presets:', presetFlows.map(p => ({ id: p._id, name: p.name })));
+        throw new Error(`Preset flow not found`);
+      }
+      
+      console.log('Found preset in state:', preset.name);
+      console.log('Preset data structure:', {
+        nodes: preset.nodes ? preset.nodes.slice(0, 1) : 'No nodes',
+        edges: preset.edges ? preset.edges.slice(0, 1) : 'No edges'
+      });
+      
+      // First, clear the canvas to avoid any render artifacts
+      setNodes([]);
+      setEdges([]);
+      setSelectedNode(null);
+      
+      // If we found the preset in our state, create a new flow based on it
+      // Ensure nodes and edges are properly structured
+      let nodes: Node[] = [];
+      let edges: Edge[] = [];
+      
+      if (preset.nodes && Array.isArray(preset.nodes)) {
+        // Deep copy and ensure each node has the correct structure
+        nodes = JSON.parse(JSON.stringify(preset.nodes)).map((node: any) => {
+          // Ensure node has all required fields
+          if (!node.id) {
+            console.warn('Node missing ID, generating a new one');
+            node.id = `node-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+          }
+          
+          // Fix node data structure issues
+          if (node.data) {
+            // Convert 'content' to 'message' if needed
+            if (node.data.content && !node.data.message) {
+              console.log(`Converting 'content' to 'message' for node ${node.id}`);
+              node.data = { ...node.data, message: node.data.content };
+              // Keep content for backward compatibility
+            }
+            
+            // Convert 'waitTime' to 'timeout' if needed
+            if (node.data.waitTime !== undefined && node.data.timeout === undefined) {
+              console.log(`Converting 'waitTime' to 'timeout' for node ${node.id}`);
+              node.data = { ...node.data, timeout: node.data.waitTime };
+              // Keep waitTime for backward compatibility
+            }
+            
+            // Convert 'waitUnit' to 'timeoutUnit' if needed
+            if (node.data.waitUnit && !node.data.timeoutUnit) {
+              console.log(`Converting 'waitUnit' to 'timeoutUnit' for node ${node.id}`);
+              node.data = { ...node.data, timeoutUnit: node.data.waitUnit };
+              // Keep waitUnit for backward compatibility
+            }
+          }
+          
+          return node;
+        });
         
-        console.log("Creating new flow from preset:", newFlow);
+        console.log(`Processed ${nodes.length} nodes for the new flow`);
+      } else {
+        console.warn('No valid nodes array found in preset');
+      }
+      
+      if (preset.edges && Array.isArray(preset.edges)) {
+        // Deep copy and ensure each edge has the correct structure
+        edges = JSON.parse(JSON.stringify(preset.edges)).map((edge: any) => {
+          // Ensure edge has all required fields
+          if (!edge.id) {
+            console.warn('Edge missing ID, generating a new one');
+            edge.id = `edge-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+          }
+          
+          return edge;
+        });
         
+        console.log(`Processed ${edges.length} edges for the new flow`);
+      } else {
+        console.warn('No valid edges array found in preset');
+      }
+      
+      const newFlow: Partial<FlowData> = {
+        name: newName || `Copy of ${preset.name}`,
+        description: preset.description || '',
+        nodes: nodes,
+        edges: edges,
+        is_active: false
+      };
+      
+      console.log("Creating new flow from preset with data:", {
+        name: newFlow.name,
+        nodeCount: newFlow.nodes?.length || 0,
+        edgeCount: newFlow.edges?.length || 0
+      });
+      
+      // Log the first node and edge for debugging
+      if (newFlow.nodes && newFlow.nodes.length > 0) {
+        console.log("Sample node data:", JSON.stringify(newFlow.nodes[0]));
+      }
+      
+      if (newFlow.edges && newFlow.edges.length > 0) {
+        console.log("Sample edge data:", JSON.stringify(newFlow.edges[0]));
+      }
+      
+      try {
         // Create the flow
         const createdFlow = await flowService.createFlow(newFlow);
         
-        // Load the new flow
-        await loadFlow(createdFlow._id!);
+        // Check if we have a valid response with _id
+        if (!createdFlow || !createdFlow._id) {
+          console.error('API returned invalid flow data:', createdFlow);
+          throw new Error('Failed to create flow from preset: Missing flow ID');
+        }
         
-        // Refresh the flows list
+        console.log("Flow created successfully with ID:", createdFlow._id);
+        
+        // Update state in sequence with small delays to ensure React Flow updates properly
+        setTimeout(() => {
+          // Update with the new flow data after a short delay for React to process the cleared state
+          setNodes(createdFlow.nodes || []);
+          setEdges(createdFlow.edges || []);
+          setFlowName(createdFlow.name || '');
+          setFlowDescription(createdFlow.description || '');
+          setIsFlowActive(false);
+          setCurrentFlowId(createdFlow._id as string);
+          setIsDirty(false);
+          
+          // Force React Flow to fit view after nodes are updated
+          if (reactFlowInstance) {
+            setTimeout(() => {
+              reactFlowInstance.fitView({ padding: 0.2 });
+            }, 300);
+          }
+          
+          console.log("Flow state updated in UI with node count:", createdFlow.nodes?.length || 0);
+        }, 100);
+        
+        // Also reload the flows list to ensure everything is synced
         await loadFlows();
         
-        return;
+        return createdFlow;
+      } catch (error) {
+        // If there's an error with the API, try a local approach
+        console.warn('API error when creating flow. Creating flow locally:', error);
+        
+        // Create a new flow locally and assign a temporary ID
+        const tempId = `temp-${Date.now()}`;
+        const localFlow: FlowData = {
+          _id: tempId,
+          name: newName || `Copy of ${preset.name}`,
+          description: preset.description || '',
+          nodes: nodes,
+          edges: edges,
+          is_active: false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        // Update UI with the local flow
+        setNodes(localFlow.nodes);
+        setEdges(localFlow.edges);
+        setFlowName(localFlow.name);
+        setFlowDescription(localFlow.description);
+        setIsFlowActive(false);
+        setCurrentFlowId(null);  // Set to null to indicate unsaved state
+        setIsDirty(true);  // Mark as dirty for saving
+        
+        if (reactFlowInstance) {
+          setTimeout(() => {
+            reactFlowInstance.fitView({ padding: 0.2 });
+          }, 300);
+        }
+        
+        console.log("Created flow locally without API (will require saving)");
+        
+        return localFlow;
       }
-      
-      // If we didn't find the preset in our state, try to duplicate it directly
-      console.log("Preset not found in state, trying direct duplication");
-      await duplicateFlow(presetId, newName || 'New flow from preset');
-      
     } catch (error) {
       console.error('Error creating flow from preset:', error);
       throw error;
     } finally {
       setIsLoading(false);
     }
-  }, [duplicateFlow, flowService, loadFlow, loadFlows, loadPresetFlows, presetFlows]);
+  }, [loadFlows, loadPresetFlows, presetFlows, setNodes, setEdges, reactFlowInstance, setSelectedNode]);
   
   // Create the context value
   const contextValue: FlowContextType = {

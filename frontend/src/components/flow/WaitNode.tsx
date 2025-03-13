@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -12,9 +12,14 @@ import TimerIcon from '@mui/icons-material/Timer';
 
 interface WaitNodeData {
   label: string;
-  timeout: number;
-  timeoutUnit: 'seconds' | 'minutes' | 'hours' | 'days';
-  waitForReply: boolean;
+  timeout?: number;
+  timeoutUnit?: 'seconds' | 'minutes' | 'hours' | 'days';
+  // Legacy properties for backward compatibility
+  duration?: number;
+  timeUnit?: 'seconds' | 'minutes' | 'hours' | 'days';
+  waitTime?: number;
+  waitUnit?: 'seconds' | 'minutes' | 'hours' | 'days';
+  waitForReply?: boolean;
   onTimeoutChange?: (timeout: number) => void;
   onTimeoutUnitChange?: (unit: 'seconds' | 'minutes' | 'hours' | 'days') => void;
   onWaitForReplyChange?: (waitForReply: boolean) => void;
@@ -32,16 +37,51 @@ const WaitNode: React.FC<NodeProps<WaitNodeData>> = ({
   isConnectable,
   selected
 }) => {
+  // Handle different property naming in data
+  const [localTimeout, setLocalTimeout] = useState<number>(0);
+  const [localTimeoutUnit, setLocalTimeoutUnit] = useState<'seconds' | 'minutes' | 'hours' | 'days'>('minutes');
+  
+  // Initialize state from data on component mount or data changes
+  useEffect(() => {
+    // Determine which property to use for timeout value
+    let timeoutValue = 0;
+    let timeoutUnitValue: 'seconds' | 'minutes' | 'hours' | 'days' = 'minutes';
+    
+    if (data.timeout !== undefined) {
+      timeoutValue = data.timeout;
+    } else if (data.duration !== undefined) {
+      timeoutValue = data.duration;
+    } else if (data.waitTime !== undefined) {
+      timeoutValue = data.waitTime;
+    }
+    
+    if (data.timeoutUnit) {
+      timeoutUnitValue = data.timeoutUnit;
+    } else if (data.timeUnit) {
+      timeoutUnitValue = data.timeUnit;
+    } else if (data.waitUnit) {
+      timeoutUnitValue = data.waitUnit;
+    }
+    
+    setLocalTimeout(timeoutValue);
+    setLocalTimeoutUnit(timeoutUnitValue);
+  }, [data.timeout, data.duration, data.waitTime, data.timeoutUnit, data.timeUnit, data.waitUnit]);
+
   const handleTimeoutChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10) || 0;
+    setLocalTimeout(value);
+    
     if (data.onTimeoutChange) {
-      const value = parseInt(event.target.value, 10) || 0;
       data.onTimeoutChange(value);
     }
   };
 
   const handleTimeoutUnitChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as 'seconds' | 'minutes' | 'hours' | 'days';
+    setLocalTimeoutUnit(value);
+    
     if (data.onTimeoutUnitChange) {
-      data.onTimeoutUnitChange(event.target.value as 'seconds' | 'minutes' | 'hours' | 'days');
+      data.onTimeoutUnitChange(value);
     }
   };
 
@@ -75,7 +115,7 @@ const WaitNode: React.FC<NodeProps<WaitNodeData>> = ({
           size="small"
           type="number"
           label="Wait for"
-          value={data.timeout || 0}
+          value={localTimeout}
           onChange={handleTimeoutChange}
           sx={{ mr: 1, width: '40%' }}
           inputProps={{ min: 0 }}
@@ -84,7 +124,7 @@ const WaitNode: React.FC<NodeProps<WaitNodeData>> = ({
         <FormControl size="small" sx={{ width: '60%' }}>
           <InputLabel>Unit</InputLabel>
           <Select
-            value={data.timeoutUnit || 'minutes'}
+            value={localTimeoutUnit}
             label="Unit"
             onChange={handleTimeoutUnitChange}
           >

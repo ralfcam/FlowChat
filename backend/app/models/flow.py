@@ -113,28 +113,8 @@ class Flow:
     def find_presets(cls):
         """Find all preset flows."""
         db = get_db()
-        
-        # First try to find flows marked as presets
-        cursor = db.flows.find({"is_preset": True})
-        preset_flows = list(cursor)
-        
-        # If no presets found, try creating default ones
-        if not preset_flows:
-            print("No preset flows found, checking if we need to create defaults")
-            
-            # Check if we need to create default preset flows
-            # This would usually be called from initialization script, but we'll check here too
-            if db.flows.count_documents({"is_preset": True}) == 0:
-                from app.utils.preset_flows import create_default_presets
-                try:
-                    create_default_presets()
-                    # Try to fetch the presets again
-                    cursor = db.flows.find({"is_preset": True})
-                    preset_flows = list(cursor)
-                except Exception as e:
-                    print(f"Error creating default presets: {e}")
-        
-        return [cls.from_dict(flow) for flow in preset_flows]
+        flows = db.flows.find({"is_preset": True})
+        return [cls.from_dict(flow) for flow in flows]
     
     def duplicate(self, new_name=None, new_user_id=None, as_preset=False):
         """Duplicate a flow for a user."""

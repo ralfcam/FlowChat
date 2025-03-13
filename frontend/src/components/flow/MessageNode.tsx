@@ -1,11 +1,13 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
 import { Paper, Typography, Box, TextField } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 
 interface MessageNodeData {
   label: string;
-  message: string;
+  message?: string;
+  content?: string; // For backward compatibility
+  type?: string;
   onMessageChange?: (message: string) => void;
 }
 
@@ -14,9 +16,21 @@ const MessageNode: React.FC<NodeProps<MessageNodeData>> = ({
   isConnectable,
   selected
 }) => {
+  const [localMessage, setLocalMessage] = useState<string>('');
+  
+  // Initialize message from either message or content property
+  useEffect(() => {
+    const messageContent = data.message !== undefined ? data.message : 
+                           data.content !== undefined ? data.content : '';
+    setLocalMessage(messageContent);
+  }, [data.message, data.content]);
+
   const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newMessage = event.target.value;
+    setLocalMessage(newMessage);
+    
     if (data.onMessageChange) {
-      data.onMessageChange(event.target.value);
+      data.onMessageChange(newMessage);
     }
   };
 
@@ -51,7 +65,7 @@ const MessageNode: React.FC<NodeProps<MessageNodeData>> = ({
         variant="outlined"
         size="small"
         placeholder="Enter message text..."
-        value={data.message}
+        value={localMessage}
         onChange={handleMessageChange}
         sx={{ mb: 1 }}
       />

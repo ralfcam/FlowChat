@@ -105,15 +105,15 @@ const NodePalette = () => {
       <Typography variant="h6" gutterBottom>Node Palette</Typography>
       <Divider sx={{ mb: 2 }} />
       
-      {nodeCategories.map((category, idx) => (
-        <Box key={idx} sx={{ mb: 3 }}>
+      {nodeCategories.map((category, categoryIdx) => (
+        <Box key={`category-${categoryIdx}-${category.title}`} sx={{ mb: 3 }}>
           <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
             {category.title}
           </Typography>
           
           {category.items.map((item, itemIdx) => (
             <Paper 
-              key={itemIdx}
+              key={`item-${category.title}-${itemIdx}-${item.type}`}
               elevation={1}
               sx={{ 
                 p: 1.5, 
@@ -160,19 +160,22 @@ const NodePalette = () => {
       </Typography>
       
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-        {nodeCategories.flatMap(category => 
-          category.items.map((item, idx) => (
-            <Tooltip key={idx} title={item.label}>
-              <IconButton 
-                size="small"
-                color={item.color || 'default'}
-                onClick={() => addNode(item.type)}
-              >
-                <AddIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          ))
-        )}
+        {nodeCategories.map((category, categoryIdx) => (
+          // Use fragment to avoid adding extra DOM elements
+          <React.Fragment key={`button-group-${categoryIdx}-${category.title}`}>
+            {category.items.map((item, itemIdx) => (
+              <Tooltip key={`button-${category.title}-${itemIdx}-${item.type}`} title={item.label}>
+                <IconButton 
+                  size="small"
+                  color={item.color || 'default'}
+                  onClick={() => addNode(item.type)}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            ))}
+          </React.Fragment>
+        ))}
       </Box>
     </Paper>
   );
@@ -513,6 +516,7 @@ const FlowEditorContent = () => {
     onEdgesChange, 
     onConnect, 
     setReactFlowInstance,
+    reactFlowInstance,
     setSelectedNode,
     addNode,
     duplicateNode,
@@ -654,24 +658,76 @@ const FlowEditorContent = () => {
   };
   
   const handleCreateFromPreset = useCallback((presetId: string) => {
+    if (!presetId) {
+      console.error('No preset ID provided');
+      setNotification({
+        open: true,
+        message: 'Cannot create flow: No preset selected',
+        severity: 'error'
+      });
+      return;
+    }
+
+    // Set local loading state
+    setIsLoadingPresets(true);
     console.log('Creating flow from preset', presetId);
+    
     createFromPreset(presetId)
-      .then(() => {
+      .then((createdFlow) => {
+        setIsLoadingPresets(false);
+        
+        // Verify we have a valid flow object
+        if (!createdFlow) {
+          throw new Error('No flow was returned');
+        }
+        
+        // Verify the flow has an ID
+        if (!createdFlow._id) {
+          throw new Error('Created flow is missing _id property');
+        }
+        
+        console.log('Flow created successfully from preset:', {
+          id: createdFlow._id,
+          name: createdFlow.name,
+          nodeCount: createdFlow.nodes?.length || 0,
+          edgeCount: createdFlow.edges?.length || 0
+        });
+        
+        // Force React Flow to re-render with the new flow
+        if (reactFlowInstance) {
+          setTimeout(() => {
+            console.log('Fitting view to display the new flow');
+            reactFlowInstance.fitView({ padding: 0.2 });
+          }, 300); // Small delay to ensure state has updated
+        }
+        
         setNotification({
           open: true,
-          message: 'Flow created from preset',
+          message: `Flow "${createdFlow.name}" created from preset`,
           severity: 'success'
         });
       })
       .catch(err => {
+        setIsLoadingPresets(false);
         console.error('Error creating flow from preset:', err);
+        
+        // Determine the error message to show
+        let errorMessage = 'Failed to create flow from preset';
+        
+        if (err instanceof Error) {
+          errorMessage += ': ' + err.message;
+        } else if (typeof err === 'string') {
+          errorMessage += ': ' + err;
+        }
+        
+        // Show error notification
         setNotification({
           open: true,
-          message: 'Failed to create flow from preset',
+          message: errorMessage,
           severity: 'error'
         });
       });
-  }, [createFromPreset]);
+  }, [createFromPreset, reactFlowInstance, setNotification]);
   
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }}>

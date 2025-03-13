@@ -256,7 +256,12 @@ const FlowHeader: React.FC<FlowHeaderProps> = ({
           maxWidth="md"
           fullWidth
         >
-          <DialogTitle>Load Flow</DialogTitle>
+          <DialogTitle>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant="h6">Load Flow</Typography>
+              {isLoading && <CircularProgress size={24} />}
+            </Box>
+          </DialogTitle>
           <DialogContent>
             <Box sx={{ width: '100%', mb: 2 }}>
               <Tabs value={loadDialogTab} onChange={handleLoadTabChange} centered>
@@ -286,11 +291,38 @@ const FlowHeader: React.FC<FlowHeaderProps> = ({
                     {flows.length === 0 && (
                       <MenuItem disabled>No flows available</MenuItem>
                     )}
-                    {flows.map((flow) => (
-                      <MenuItem key={flow._id} value={flow._id}>
-                        {flow.name}
-                      </MenuItem>
-                    ))}
+                    {[...flows]
+                      .sort((a, b) => {
+                        const dateA = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+                        const dateB = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+                        return dateB - dateA;
+                      })
+                      .map((flow) => (
+                        <MenuItem key={flow._id} value={flow._id}>
+                          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                            <Typography variant="body1">
+                              {flow.name} {flow.is_active && (
+                                <Box component="span" sx={{ color: 'success.main', fontSize: '0.8rem', ml: 1 }}>
+                                  (Active)
+                                </Box>
+                              )}
+                            </Typography>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                              {flow.description && (
+                                <Typography variant="caption" color="text.secondary" noWrap sx={{ maxWidth: '70%' }}>
+                                  {flow.description.substring(0, 60)}{flow.description.length > 60 ? '...' : ''}
+                                </Typography>
+                              )}
+                              {flow.updated_at && (
+                                <Typography variant="caption" color="text.secondary">
+                                  {new Date(flow.updated_at).toLocaleString()}
+                                </Typography>
+                              )}
+                            </Box>
+                          </Box>
+                        </MenuItem>
+                      ))
+                    }
                   </Select>
                 </FormControl>
               </>
@@ -314,7 +346,12 @@ const FlowHeader: React.FC<FlowHeaderProps> = ({
                     )}
                     {presetFlows.map((flow) => (
                       <MenuItem key={flow._id} value={flow._id}>
-                        {flow.name}
+                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                          <Typography variant="body1">{flow.name}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {flow.description}
+                          </Typography>
+                        </Box>
                       </MenuItem>
                     ))}
                   </Select>
@@ -325,7 +362,7 @@ const FlowHeader: React.FC<FlowHeaderProps> = ({
                     variant="contained"
                     color="primary"
                     startIcon={<ContentCopyIcon />}
-                    disabled={!selectedPresetId || !onCreateFromPreset}
+                    disabled={!selectedPresetId || !onCreateFromPreset || isLoading}
                     onClick={handleCreateFromPreset}
                   >
                     Use This Preset

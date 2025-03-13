@@ -42,7 +42,7 @@ def create_welcome_flow():
             "position": {"x": 250, "y": 100},
             "data": {
                 "label": "Welcome Message",
-                "content": "Hello {{name}}! Welcome to our service. How can we help you today?",
+                "message": "Hello {{name}}! Welcome to our service. How can we help you today?",
                 "type": "text"
             }
         },
@@ -52,8 +52,8 @@ def create_welcome_flow():
             "position": {"x": 250, "y": 250},
             "data": {
                 "label": "Wait for Response",
-                "waitTime": 0,
-                "waitUnit": "minutes"
+                "timeout": 0,
+                "timeoutUnit": "minutes"
             }
         },
         {
@@ -62,7 +62,7 @@ def create_welcome_flow():
             "position": {"x": 250, "y": 400},
             "data": {
                 "label": "Help Message",
-                "content": "Here are some ways we can help you...",
+                "message": "Here are some ways we can help you...",
                 "type": "text"
             }
         }
@@ -105,7 +105,7 @@ def create_support_flow():
             "position": {"x": 250, "y": 100},
             "data": {
                 "label": "Support Greeting",
-                "content": "Hello {{name}}! Welcome to customer support. Please let us know what issue you're experiencing.",
+                "message": "Hello {{name}}! Welcome to customer support. Please let us know what issue you're experiencing.",
                 "type": "text"
             }
         },
@@ -115,8 +115,8 @@ def create_support_flow():
             "position": {"x": 250, "y": 250},
             "data": {
                 "label": "Wait for Description",
-                "waitTime": 0,
-                "waitUnit": "minutes"
+                "timeout": 0,
+                "timeoutUnit": "minutes"
             }
         },
         {
@@ -125,11 +125,9 @@ def create_support_flow():
             "position": {"x": 250, "y": 400},
             "data": {
                 "label": "Check Issue Type",
-                "conditions": [
-                    {"value": "technical", "label": "Technical Issue"},
-                    {"value": "billing", "label": "Billing Issue"},
-                    {"value": "other", "label": "Other"}
-                ]
+                "variable": "message",
+                "operator": "contains",
+                "value": "technical"
             }
         },
         {
@@ -138,7 +136,7 @@ def create_support_flow():
             "position": {"x": 100, "y": 550},
             "data": {
                 "label": "Technical Support",
-                "content": "I understand you're having a technical issue. Let me help you troubleshoot that...",
+                "message": "I understand you're having a technical issue. Let me help you troubleshoot that...",
                 "type": "text"
             }
         },
@@ -148,7 +146,7 @@ def create_support_flow():
             "position": {"x": 250, "y": 550},
             "data": {
                 "label": "Billing Support",
-                "content": "I understand you have a billing question. Let me check your account details...",
+                "message": "I understand you have a billing question. Let me check your account details...",
                 "type": "text"
             }
         },
@@ -158,7 +156,7 @@ def create_support_flow():
             "position": {"x": 400, "y": 550},
             "data": {
                 "label": "General Support",
-                "content": "Thank you for your message. A support agent will be with you shortly.",
+                "message": "Thank you for your message. A support agent will be with you shortly.",
                 "type": "text"
             }
         }
@@ -180,21 +178,14 @@ def create_support_flow():
             "id": f"edge-{uuid.uuid4()}",
             "source": nodes[2]["id"],
             "target": nodes[3]["id"],
-            "sourceHandle": "technical",
-            "targetHandle": null
-        },
-        {
-            "id": f"edge-{uuid.uuid4()}",
-            "source": nodes[2]["id"],
-            "target": nodes[4]["id"],
-            "sourceHandle": "billing",
+            "sourceHandle": "yes",
             "targetHandle": null
         },
         {
             "id": f"edge-{uuid.uuid4()}",
             "source": nodes[2]["id"],
             "target": nodes[5]["id"],
-            "sourceHandle": "other",
+            "sourceHandle": "no",
             "targetHandle": null
         }
     ]
@@ -222,7 +213,7 @@ def create_order_status_flow():
             "position": {"x": 250, "y": 100},
             "data": {
                 "label": "Order Status Inquiry",
-                "content": "Hello {{name}}! To check your order status, please provide your order number.",
+                "message": "Hello {{name}}! To check your order status, please provide your order number.",
                 "type": "text"
             }
         },
@@ -232,8 +223,8 @@ def create_order_status_flow():
             "position": {"x": 250, "y": 250},
             "data": {
                 "label": "Wait for Order Number",
-                "waitTime": 0,
-                "waitUnit": "minutes"
+                "timeout": 0,
+                "timeoutUnit": "minutes"
             }
         },
         {
@@ -242,7 +233,7 @@ def create_order_status_flow():
             "position": {"x": 250, "y": 400},
             "data": {
                 "label": "Order Status",
-                "content": "Thank you! Your order #{{order_number}} is currently {{status}}. Expected delivery date: {{delivery_date}}.",
+                "message": "Thank you! Your order #{{order_number}} is currently {{status}}. Expected delivery date: {{delivery_date}}.",
                 "type": "text"
             }
         },
