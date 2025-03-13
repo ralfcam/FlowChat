@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   Background,
@@ -17,7 +17,8 @@ import {
   IconButton, 
   Snackbar,
   Alert,
-  Tooltip
+  Tooltip,
+  CircularProgress
 } from '../components/flow/MaterialImports';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
@@ -506,17 +507,171 @@ const PropertiesPanel = () => {
 // FlowEditorContent component that uses the FlowContext
 const FlowEditorContent = () => {
   const { 
-    flowName, 
-    flowDescription, 
-    isFlowActive, 
+    nodes, 
+    edges, 
+    onNodesChange, 
+    onEdgesChange, 
+    onConnect, 
+    setReactFlowInstance,
+    setSelectedNode,
+    addNode,
+    duplicateNode,
+    deleteNode,
+    flowName,
+    flowDescription,
+    isFlowActive,
     isDirty,
     setFlowName,
     setFlowDescription,
     toggleFlowActive,
     saveFlow,
     createNewFlow,
-    deleteFlow
+    deleteFlow,
+    flows,
+    presetFlows,
+    loadFlow,
+    loadFlows,
+    currentFlowId,
+    isLoading,
+    createFromPreset,
+    loadPresetFlows
   } = useFlow();
+  
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    severity: 'info' as 'info' | 'success' | 'warning' | 'error'
+  });
+  const [isLoadingPresets, setIsLoadingPresets] = useState(false);
+  
+  // Load flows and preset flows on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoadingPresets(true);
+      try {
+        console.log('FlowEditor: Starting to load flows and presets');
+        
+        // First load user flows
+        await loadFlows();
+        console.log('FlowEditor: User flows loaded');
+        
+        // Then manually trigger preset flows load
+        if (!presetFlows || presetFlows.length === 0) {
+          console.log('FlowEditor: No preset flows found, loading them explicitly');
+          await loadPresetFlows();
+          console.log('FlowEditor: Preset flows loading complete');
+        } else {
+          console.log(`FlowEditor: ${presetFlows.length} preset flows already loaded`);
+        }
+      } catch (error) {
+        console.error('FlowEditor: Error loading flows or presets:', error);
+        setNotification({
+          open: true,
+          message: 'Failed to load flows or presets',
+          severity: 'error'
+        });
+      } finally {
+        setIsLoadingPresets(false);
+      }
+    };
+    
+    fetchData();
+  }, [loadFlows, loadPresetFlows, presetFlows]);
+  
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      if (!type || !reactFlowBounds || !setReactFlowInstance) {
+        return;
+      }
+
+      const position = {
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      };
+
+      addNode(type, position);
+      
+      setNotification({
+        open: true,
+        message: `Added new ${type} node`,
+        severity: 'success'
+      });
+    },
+    [addNode, setReactFlowInstance]
+  );
+  
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    setSelectedNode(node);
+  }, [setSelectedNode]);
+  
+  const handleCloseNotification = () => {
+    setNotification({
+      ...notification,
+      open: false
+    });
+  };
+  
+  const onNodeToolbarAction = useCallback((action: string, node: Node) => {
+    switch (action) {
+      case 'edit':
+        setSelectedNode(node);
+        break;
+      case 'duplicate':
+        duplicateNode(node);
+        setNotification({
+          open: true,
+          message: 'Node duplicated',
+          severity: 'info'
+        });
+        break;
+      case 'delete':
+        deleteNode(node.id);
+        setNotification({
+          open: true,
+          message: 'Node deleted',
+          severity: 'info'
+        });
+        break;
+      default:
+        break;
+    }
+  }, [setSelectedNode, duplicateNode, deleteNode]);
+  
+  const handleFlowSelect = (e: React.ChangeEvent<{ value: unknown }>) => {
+    const flowId = e.target.value as string;
+    loadFlow(flowId);
+  };
+  
+  const handleCreateFromPreset = useCallback((presetId: string) => {
+    console.log('Creating flow from preset', presetId);
+    createFromPreset(presetId)
+      .then(() => {
+        setNotification({
+          open: true,
+          message: 'Flow created from preset',
+          severity: 'success'
+        });
+      })
+      .catch(err => {
+        console.error('Error creating flow from preset:', err);
+        setNotification({
+          open: true,
+          message: 'Failed to create flow from preset',
+          severity: 'error'
+        });
+      });
+  }, [createFromPreset]);
   
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)' }}>
@@ -529,10 +684,36 @@ const FlowEditorContent = () => {
         onFlowNameChange={setFlowName}
         onFlowDescriptionChange={setFlowDescription}
         onToggleActive={toggleFlowActive}
-        onSave={() => saveFlow()}
+        onSave={saveFlow}
         onNew={createNewFlow}
-        onDelete={() => deleteFlow()}
+        onDelete={deleteFlow}
+        onLoad={loadFlows}
+        onFlowSelect={handleFlowSelect}
+        onCreateFromPreset={handleCreateFromPreset}
+        isLoading={isLoading || isLoadingPresets}
+        flows={flows}
+        presetFlows={presetFlows || []}
+        currentFlowId={currentFlowId}
       />
+      
+      {/* Display a loading indicator when presets are being loaded */}
+      {isLoadingPresets && (
+        <Box sx={{ 
+          position: 'absolute', 
+          top: '70px', 
+          right: '20px', 
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          bgcolor: 'background.paper',
+          p: 1,
+          borderRadius: 1,
+          boxShadow: 1
+        }}>
+          <CircularProgress size={20} sx={{ mr: 1 }} />
+          <Typography variant="caption">Loading presets...</Typography>
+        </Box>
+      )}
       
       <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
         {/* Node Palette */}
@@ -554,12 +735,35 @@ const FlowEditorContent = () => {
         {/* Node Properties Panel */}
         <PropertiesPanel />
       </Box>
+      
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={3000}
+        onClose={() => setNotification({...notification, open: false})}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert 
+          onClose={() => setNotification({...notification, open: false})} 
+          severity={notification.severity}
+          sx={{ width: '100%' }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
 
 // Main FlowEditor component
 const FlowEditor: React.FC = () => {
+  // Debug info in development mode
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('FlowEditor running in development mode');
+      console.log('Authentication bypass should be enabled');
+    }
+  }, []);
+  
   return (
     <FlowProvider>
       <FlowEditorContent />

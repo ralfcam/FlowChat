@@ -12,6 +12,7 @@ set "BACKEND_DIR=%CD%\backend"
 set "VENV_DIR=%BACKEND_DIR%\venv"
 set "LOGS_DIR=%BACKEND_DIR%\logs"
 set "BACKEND_LOG=%LOGS_DIR%\backend.log"
+set "DEV_BACKEND_LOG=%LOGS_DIR%\backend_dev.log"
 
 :: Frontend variables
 set "FRONTEND_DIR=%CD%\frontend"
@@ -32,6 +33,7 @@ if "%~1"=="start-b" goto start_backend
 if "%~1"=="start-f" goto start_frontend
 if "%~1"=="stop-b" goto stop_backend
 if "%~1"=="stop-f" goto stop_frontend
+if "%~1"=="start-dev" goto start_dev_mode
 if "%~1"=="help" goto usage
 goto usage
 
@@ -83,6 +85,16 @@ goto end
 call :stop_frontend_proc
 goto end
 
+:start_dev_mode
+echo Starting FlowChat in DEVELOPMENT mode with authentication bypass...
+call :check_python
+call :check_node
+call :setup_venv
+call :check_env_file
+call :start_backend_dev_proc
+call :start_frontend_proc
+goto end
+
 :show_status
 echo ===== FlowChat Services Status =====
 call :is_backend_running
@@ -113,6 +125,8 @@ if %errorlevel% neq 0 (
     echo Python is not installed or not in PATH. Please install it to run the backend.
     exit /b 1
 )
+echo Python found: 
+python --version
 exit /b 0
 
 :check_node
@@ -121,6 +135,8 @@ if %errorlevel% neq 0 (
     echo Node.js is not installed or not in PATH. Please install it to run the frontend.
     exit /b 1
 )
+echo Node.js found:
+node --version
 exit /b 0
 
 :setup_venv
@@ -128,16 +144,34 @@ echo Setting up Python virtual environment...
 
 if not exist "%VENV_DIR%" (
     :: Create virtual environment
+    echo Creating new virtual environment...
     python -m venv "%VENV_DIR%"
     
     :: Activate virtual environment and install dependencies
     call "%VENV_DIR%\Scripts\activate.bat"
+    echo Installing dependencies...
+    python -m pip install --upgrade pip
     pip install -r "%BACKEND_DIR%\requirements.txt"
+    echo Dependencies installed.
     call "%VENV_DIR%\Scripts\deactivate.bat"
     
     echo Virtual environment created and dependencies installed.
 ) else (
-    echo Virtual environment already exists.
+    echo Virtual environment already exists. Checking dependencies...
+    call "%VENV_DIR%\Scripts\activate.bat"
+    
+    :: Check if Flask is installed
+    python -c "import flask" >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo Flask not found. Installing dependencies...
+        python -m pip install --upgrade pip
+        pip install -r "%BACKEND_DIR%\requirements.txt"
+        echo Dependencies installed.
+    ) else (
+        echo Flask already installed.
+    )
+    
+    call "%VENV_DIR%\Scripts\deactivate.bat"
 )
 exit /b 0
 
@@ -165,21 +199,109 @@ if !errorlevel! equ 0 (
 
 :: Start the backend
 cd "%BACKEND_DIR%"
+
+:: Check if we can activate the venv
+if not exist "%VENV_DIR%\Scripts\activate.bat" (
+    echo Virtual environment activation script not found. Re-creating venv...
+    cd ..
+    call :setup_venv
+    cd "%BACKEND_DIR%"
+)
+
+:: Activate and run
 call "%VENV_DIR%\Scripts\activate.bat"
 
+:: Verify flask is installed
+python -c "import flask" >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Flask not found. Installing dependencies...
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    echo Dependencies installed.
+)
+
 :: Start with START /B to run in background
-start /B cmd /c "python app.py > "%BACKEND_LOG%" 2>&1"
+echo Starting Flask application...
+start /B cmd /c "python app.py >> "%BACKEND_LOG%" 2>&1"
 for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
     set lastpid=%%a
 )
 
 :: Save PID to file
-echo backend:!lastpid! >> "%PID_FILE%"
+echo backend:!lastpid! > "%PID_FILE%"
 call "%VENV_DIR%\Scripts\deactivate.bat"
 cd "%~dp0"
 
 echo Backend started with PID: !lastpid!
 echo Logs available at: %BACKEND_LOG%
+exit /b 0
+
+:start_backend_dev_proc
+echo.
+echo Starting FlowChat Backend in DEVELOPMENT mode...
+echo.
+echo WARNING: Authentication is bypassed in this mode!
+echo.
+
+:: Check if already running
+call :is_backend_running
+if !errorlevel! equ 0 (
+    echo Backend is already running. Please stop it first.
+    exit /b 0
+)
+
+:: Start the backend
+cd "%BACKEND_DIR%"
+
+:: Check if we can activate the venv
+if not exist "%VENV_DIR%\Scripts\activate.bat" (
+    echo Virtual environment activation script not found. Re-creating venv...
+    cd ..
+    call :setup_venv
+    cd "%BACKEND_DIR%"
+)
+
+:: Activate and run
+call "%VENV_DIR%\Scripts\activate.bat"
+
+:: Verify flask is installed
+python -c "import flask" >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Flask not found. Installing dependencies...
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    echo Dependencies installed.
+)
+
+:: Set environment variables for development mode
+set FLASK_ENV=development
+set FLASK_DEBUG=1
+set DEV_AUTH_BYPASS=true
+
+:: Start with START /B to run in background - using a different log file for dev mode
+echo Starting Flask application in development mode...
+
+:: Use a temporary script to set environment variables and run the app
+echo @echo off > "%TEMP%\run_flowchat_dev.bat"
+echo set FLASK_ENV=development >> "%TEMP%\run_flowchat_dev.bat"
+echo set FLASK_DEBUG=1 >> "%TEMP%\run_flowchat_dev.bat"
+echo set DEV_AUTH_BYPASS=true >> "%TEMP%\run_flowchat_dev.bat"
+echo python app.py >> "%TEMP%\run_flowchat_dev.bat"
+
+start /B cmd /c "%TEMP%\run_flowchat_dev.bat" >> "%DEV_BACKEND_LOG%" 2>&1
+
+for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
+    set lastpid=%%a
+)
+
+:: Save PID to file
+echo backend:!lastpid! > "%PID_FILE%"
+call "%VENV_DIR%\Scripts\deactivate.bat"
+cd "%~dp0"
+
+echo Backend started in DEVELOPMENT mode with PID: !lastpid!
+echo Authentication is BYPASSED in this mode.
+echo Logs available at: %DEV_BACKEND_LOG%
 exit /b 0
 
 :start_frontend_proc
@@ -202,13 +324,18 @@ if not exist "%FRONTEND_DIR%\node_modules" (
 
 :: Start the frontend
 cd "%FRONTEND_DIR%"
-start /B cmd /c "npm start > "%FRONTEND_LOG%" 2>&1"
+start /B cmd /c "npm start >> "%FRONTEND_LOG%" 2>&1"
 for /f "tokens=2" %%a in ('tasklist /fi "imagename eq cmd.exe" /v /fo list ^| findstr /i "PID:"') do (
     set lastpid=%%a
 )
 
 :: Save PID to file
-echo frontend:!lastpid! >> "%PID_FILE%"
+if exist "%PID_FILE%" (
+    echo frontend:!lastpid! >> "%PID_FILE%"
+) else (
+    echo frontend:!lastpid! > "%PID_FILE%"
+)
+
 cd "%~dp0"
 
 echo Frontend started with PID: !lastpid!
@@ -292,6 +419,7 @@ echo   start-b     Start only the backend service
 echo   start-f     Start only the frontend service
 echo   stop-b      Stop only the backend service
 echo   stop-f      Stop only the frontend service
+echo   start-dev   Start backend in development mode with auth bypass AND frontend
 echo   help        Show this help message
 echo.
 goto end

@@ -124,7 +124,12 @@ The backend provides several API endpoints for managing contacts, messages, and 
 
 ## Documentation
 
-Comprehensive documentation will be available in the `/docs` directory.
+Comprehensive documentation is available in the following files:
+
+- [DEVELOPMENT.md](DEVELOPMENT.md): Guidelines for development mode, authentication bypass, and debugging
+- [docs/PRESET_FLOWS.md](docs/PRESET_FLOWS.md): Detailed guide for using and creating preset flows
+- [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md): Solutions for common issues and problems
+- Additional documentation is available in the `/docs` directory.
 
 ## Contributing
 

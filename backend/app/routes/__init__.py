@@ -9,6 +9,7 @@ from app.routes.messages import messages_bp
 from app.routes.contacts import contacts_bp
 from app.routes.webhooks import webhooks_bp
 from app.routes.whatsapp import whatsapp_bp
+from app.routes.flows import flows_bp
 
 
 def register_routes(app):
@@ -21,6 +22,7 @@ def register_routes(app):
     api_v1.register_blueprint(auth_bp)
     api_v1.register_blueprint(messages_bp)
     api_v1.register_blueprint(contacts_bp)
+    api_v1.register_blueprint(flows_bp)
     
     # Register root blueprints
     app.register_blueprint(api_v1)

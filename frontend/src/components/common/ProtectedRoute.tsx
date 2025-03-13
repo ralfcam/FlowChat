@@ -21,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
   const [showDevNotice, setShowDevNotice] = React.useState(isDevelopment && bypassAuthInDevelopment);
 
   // Show loading spinner while checking authentication
-  if (loading) {
+  if (loading && !(isDevelopment && bypassAuthInDevelopment)) {
     return (
       <Box
         sx={{
@@ -40,23 +40,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
     );
   }
 
-  // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  // If role is required but user doesn't have it, redirect to unauthorized
-  if (requiredRole && user?.role !== requiredRole) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  // If authenticated and has required role, render the protected content
-  return (
-    <>
-      <Outlet />
-      
-      {/* Development mode notice */}
-      {isDevelopment && bypassAuthInDevelopment && (
+  // In development mode with bypass enabled, always render the protected content
+  if (isDevelopment && bypassAuthInDevelopment) {
+    console.log('Development mode: Authentication bypassed for route:', location.pathname);
+    return (
+      <>
+        <Outlet />
+        
+        {/* Development mode notice */}
         <Snackbar 
           open={showDevNotice} 
           autoHideDuration={6000} 
@@ -71,9 +62,22 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole }) => {
             Development mode: Authentication is bypassed.
           </Alert>
         </Snackbar>
-      )}
-    </>
-  );
+      </>
+    );
+  }
+
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // If role is required but user doesn't have it, redirect to unauthorized
+  if (requiredRole && user?.role !== requiredRole) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // If authenticated and has required role, render the protected content
+  return <Outlet />;
 };
 
 export default ProtectedRoute; 

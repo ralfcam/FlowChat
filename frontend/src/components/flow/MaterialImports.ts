@@ -20,6 +20,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Menu from '@mui/material/Menu';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 // Export types
 export type { SelectChangeEvent };
@@ -46,5 +50,9 @@ export {
   DialogContentText,
   DialogTitle,
   Snackbar,
-  Alert
+  Alert,
+  Menu,
+  CircularProgress,
+  Tabs,
+  Tab
 }; 
